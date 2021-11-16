@@ -2,6 +2,7 @@ package com.example.walkwalk
 
 import android.app.Activity
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
@@ -11,12 +12,27 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var naverMap: NaverMap
     private val mapView: MapView by lazy { findViewById(R.id.map_view) }
     private lateinit var locationSource: FusedLocationSource
+    private lateinit var moveToKnuBtn : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
+
+        moveToKnu();
+    }
+
+    private fun moveToKnu() {
+        moveToKnuBtn = findViewById(R.id.moveToKnuBtn)
+        moveToKnuBtn.setOnClickListener {
+            val cameraUpdate = CameraUpdate.scrollAndZoomTo(
+                LatLng(35.88880359446379, 128.61028951367845),
+                14.0
+            )
+                .animate(CameraAnimation.Fly)
+            naverMap.moveCamera(cameraUpdate)
+        }
     }
 
     override fun onMapReady(map: NaverMap) {
