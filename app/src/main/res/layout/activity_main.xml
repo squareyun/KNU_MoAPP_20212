@@ -8,9 +8,10 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/stepCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="현재 걸음수: "
+        android:text="0"
         android:textSize="20dp"
         android:layout_marginTop="10dp"/>
 

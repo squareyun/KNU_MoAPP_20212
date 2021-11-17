@@ -1,9 +1,17 @@
 package com.example.walkwalk
 
 import android.app.Activity
+import android.content.Context
 import android.graphics.Color
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Bundle
 import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
@@ -13,11 +21,16 @@ import com.naver.maps.map.overlay.Overlay
 import com.naver.maps.map.util.FusedLocationSource
 import com.naver.maps.map.util.MarkerIcons
 
-class MainActivity : AppCompatActivity(), OnMapReadyCallback {
+class MainActivity : AppCompatActivity(), OnMapReadyCallback, SensorEventListener {
     private lateinit var naverMap: NaverMap
     private val mapView: MapView by lazy { findViewById(R.id.map_view) }
     private lateinit var locationSource: FusedLocationSource
     private lateinit var moveToKnuBtn : Button
+
+    private var sensorManager: SensorManager? = null
+    private var running = false
+    private var totalSteps = 0f
+    private var previousTotalSteps = 0f
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +39,45 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         mapView.getMapAsync(this)
 
         moveToKnu();
+
+        loadData()
+        resetSteps()
+
+        // Adding a context of SENSOR_SERVICE aas Sensor Manager
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+    }
+
+    private fun resetSteps() {
+        var stepCount = findViewById<TextView>(R.id.stepCount)
+        stepCount.setOnClickListener {
+            Toast.makeText(this, "Long tap to reset steps", Toast.LENGTH_SHORT).show()
+        }
+
+        stepCount.setOnLongClickListener {
+            previousTotalSteps = totalSteps
+            stepCount.text = 0.toString()
+            saveData()
+            true
+        }
+    }
+
+    private fun saveData() {
+        val sharedPreferences = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
+
+        val editor = sharedPreferences.edit()
+        editor.putFloat("key1", previousTotalSteps)
+        editor.apply()
+    }
+
+    private fun loadData() {
+        val sharedPreferences = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
+        val savedNumber = sharedPreferences.getFloat("key1", 0f)
+
+        previousTotalSteps = savedNumber
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+        // We do not have to write anything in this function for this app
     }
 
     private fun setMarker() {
@@ -118,6 +170,18 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    override fun onSensorChanged(event: SensorEvent?) {
+        var stepCount = findViewById<TextView>(R.id.stepCount)
+
+        if (running) {
+            totalSteps = event!!.values[0]
+
+            val currentSteps = totalSteps.toInt() - previousTotalSteps.toInt()
+
+            stepCount.text = ("$currentSteps")
+        }
+    }
+
     override fun onStart() {
         super.onStart()
         mapView.onStart()
@@ -125,6 +189,17 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onResume() {
         super.onResume()
+
+        running = true
+
+        val stepSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+
+        if(stepSensor == null) {
+            Toast.makeText(this, "No sensor detected on this device", Toast.LENGTH_SHORT).show()
+        } else {
+            sensorManager?.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI)
+        }
+
         mapView.onResume()
     }
 
