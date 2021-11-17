@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@android:id/tabhost"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:id="@android:id/tabcontent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/friend"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/myListView">
+                </ListView>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="친구 목록"/>
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/friendListView"
+                    android:fastScrollEnabled="true">
+                </ListView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#000000"
+                android:orientation="vertical">
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/record"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#00FFFF"
+                android:orientation="vertical">
+            </LinearLayout>
+        </FrameLayout>
+
+        <TabWidget
+            android:id="@android:id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </TabWidget>
+
+    </LinearLayout>
+
+</TabHost>
