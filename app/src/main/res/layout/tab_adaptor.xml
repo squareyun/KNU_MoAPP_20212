@@ -21,29 +21,15 @@
                 android:id="@+id/friend"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="#FFFFFF"
                 android:orientation="vertical">
-                <ListView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/myListView">
-                </ListView>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="친구 목록"/>
-                <ListView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/friendListView"
-                    android:fastScrollEnabled="true">
-                </ListView>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/map"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#000000"
+                android:background="#FFFFFF"
                 android:orientation="vertical">
             </LinearLayout>
 
@@ -51,7 +37,7 @@
                 android:id="@+id/record"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#00FFFF"
+                android:background="#FFFFFF"
                 android:orientation="vertical">
             </LinearLayout>
         </FrameLayout>
