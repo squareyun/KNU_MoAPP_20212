@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.team_practice">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,7 +24,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".FriendListActivity" android:label="result"/>
-        <activity android:name=".chatActivity" android:label="chatView"/>
+<!--        <activity android:name=".chatActivity" android:label="chatView"/>-->
+<!--        <activity android:name=".MapActivity" android:label="map"/>-->
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="q53vqvvwm7" />
     </application>
 
 </manifest>

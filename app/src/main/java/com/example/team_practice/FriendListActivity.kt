@@ -1,47 +1,41 @@
 package com.example.team_practice
 
-import android.app.TabActivity
 import android.os.Bundle
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
+import kotlinx.android.synthetic.main.friend_list.*
 
-@Suppress("deprecstion")
-class FriendListActivity : TabActivity() {
+class FriendListActivity : AppCompatActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?){
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.friend_list)
+        setUpTabBar()
+    }
 
-        var tabHost = this.tabHost
+    private fun setUpTabBar() {
+        val adapter = TabPageAdapter(this, tabLayout.tabCount)
+        viewPager.adapter = adapter
 
-        var tabSpecMap = tabHost.newTabSpec("MAP").setIndicator("MAP")
-        tabSpecMap.setContent(R.id.map)
-        tabHost.addTab(tabSpecMap)
+        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                tabLayout.selectTab(tabLayout.getTabAt(position))
+            }
+        })
 
-        var tabSpecFriend = tabHost.newTabSpec("Friend").setIndicator("Friend")
-        tabSpecFriend.setContent(R.id.friend)
-        tabHost.addTab(tabSpecFriend)
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                viewPager.currentItem = tab.position
+            }
 
-        var tabSpecRecord = tabHost.newTabSpec("RECORD").setIndicator("RECORD")
-        tabSpecRecord.setContent(R.id.record)
-        tabHost.addTab(tabSpecRecord)
+            override fun onTabReselected(tab: TabLayout.Tab) {
+                print("nothing")
+            }
 
-        tabHost.currentTab = 0
-
-        var myList = findViewById<ListView>(R.id.myListView)
-        var friendList = findViewById<ListView>(R.id.friendListView)
-
-        var myAdapter : FriendListItemAdapter = FriendListItemAdapter()
-        var friendAdapter : FriendListItemAdapter = FriendListItemAdapter()
-
-        myAdapter.addItem(FriendListItem(R.drawable.ic_launcher, "박휘성", "현재 걸음 수 : " + "717"))
-        myList.adapter = myAdapter
-
-        for(i in 1..50)
-            friendAdapter.addItem(FriendListItem(R.drawable.ic_launcher, "친구" + i, "현재 걸음 수 : " + (i*10).toString()))
-        friendList.adapter = friendAdapter
-
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+                print("nothing")
+            }
+        })
     }
 }
