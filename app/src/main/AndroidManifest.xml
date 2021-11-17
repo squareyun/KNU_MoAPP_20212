@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.walkwalk">
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
+    package="com.example.team_practice">
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.WalkWalk">
+        android:theme="@style/Theme.Team_practice">
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -20,9 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <meta-data
-            android:name="com.naver.maps.map.CLIENT_ID"
-            android:value="q53vqvvwm7" />
+        <activity android:name=".FriendListActivity" android:label="result"/>
+        <activity android:name=".chatActivity" android:label="chatView"/>
     </application>
 
 </manifest>
