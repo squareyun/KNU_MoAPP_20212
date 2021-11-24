@@ -24,7 +24,7 @@
         <activity android:name=".FriendListActivity" android:label="result"/>
         <activity android:name=".chatActivity" android:label="chatView"/>
         <activity android:name=".MainMap" android:label="main_map"/>
-        <activity android:name=".MainFriendList" android:label="main_map"/>
+        <activity android:name=".MainFriendList" android:label="main_friend"/>
         <activity android:name=".MainCamera" android:label="main_camera"/>
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"

@@ -1,6 +1,7 @@
 package com.example.team_practice;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +9,10 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.os.Bundle;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
@@ -48,8 +52,9 @@ public class FriendListItemAdapter extends BaseAdapter {
         Button chatBtn = view.findViewById(R.id.friendChatBtn);
 
         chatBtn.setOnClickListener(new View.OnClickListener(){
+
             public void onClick(View v){
-                Toast.makeText(context, listItem.getName() + " 과 대화", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, listItem.getName() + " 과 대화", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -64,3 +69,5 @@ public class FriendListItemAdapter extends BaseAdapter {
         items.add(item);
     }
 }
+
+
