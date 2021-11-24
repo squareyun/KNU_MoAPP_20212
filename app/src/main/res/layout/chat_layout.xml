@@ -26,12 +26,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@drawable/chat_layout_custom">
+        android:background="@drawable/chat_layout_custom"
+        android:focusableInTouchMode="true">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textInput"
+            android:id="@+id/chatInput"
             android:layout_weight="2"/>
 
         <Button

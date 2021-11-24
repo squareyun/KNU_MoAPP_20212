@@ -25,7 +25,7 @@
         <activity android:name=".FriendListActivity" android:label="result"/>
         <activity android:name=".chatActivity" android:label="chatView"/>
         <activity android:name=".MainMap" android:label="main_map"/>
-        <activity android:name=".MainFriendList" android:label="main_map"/>
+        <activity android:name=".MainFriendList" android:label="main_friend"/>
         <activity android:name=".MainCamera" android:label="main_camera"/>
         <activity android:name=".MainActivity" android:label="register"/>
         <activity android:name=".RegisterActivity" android:label="register"/>
