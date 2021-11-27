@@ -18,7 +18,7 @@ import org.json.JSONObject;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText et_id, et_pass, et_name, et_age;
+    private EditText et_id, et_pass, et_name, et_pass_ck;
     private Button btn_register;
 
     @Override
@@ -29,7 +29,7 @@ public class RegisterActivity extends AppCompatActivity {
         et_id = findViewById(R.id.et_id);
         et_pass = findViewById(R.id.et_pass);
         et_name = findViewById(R.id.et_name);
-        et_age = findViewById(R.id.et_age);
+        et_pass_ck = findViewById(R.id.et_pass_ck);
 
         btn_register = findViewById(R.id.btn_register);
         btn_register.setOnClickListener(new View.OnClickListener() {
@@ -38,7 +38,29 @@ public class RegisterActivity extends AppCompatActivity {
                 String userID = et_id.getText().toString();
                 String userPass = et_pass.getText().toString();
                 String userName = et_name.getText().toString();
-                int userAge = Integer.parseInt(et_age.getText().toString());
+                String userPass_ck = et_pass_ck.getText().toString();
+
+                if(userName.length() == 0) {
+                    Toast.makeText(RegisterActivity.this, "이름를 입력하세요", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(userID.equals("")) {
+                    Toast.makeText(RegisterActivity.this, "ID를 입력하세요", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(userPass.length() == 0) {
+                    Toast.makeText(RegisterActivity.this, "비밀번호를 입력하세요", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(userPass_ck.length() == 0) {
+                    Toast.makeText(RegisterActivity.this, "비밀번호 확인을 입력하세요", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(!userPass.equals(userPass_ck)){
+                    Toast.makeText(RegisterActivity.this, "비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
@@ -60,7 +82,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     }
                 };
-                RegisterRequest registerRequest = new RegisterRequest(userID, userPass, userName, userAge, responseListener);
+                RegisterRequest registerRequest = new RegisterRequest(userID, userPass, userName, 10, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
                 queue.add(registerRequest);
 

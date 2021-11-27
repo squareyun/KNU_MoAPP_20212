@@ -78,23 +78,25 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:layout_gravity="center"
-        android:ems="10" />
+        android:ems="10"
+        android:inputType="textPassword"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="나이"
+        android:text="비밀번호 확인"
         android:layout_marginLeft="100dp"
         android:textSize="15dp">
     </TextView>
 
     <EditText
-        android:id="@+id/et_age"
+        android:id="@+id/et_pass_ck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="50px"
-        android:ems="10"/>
+        android:ems="10"
+        android:inputType="textPassword"/>
 
     <Button
         android:id="@+id/btn_register"
