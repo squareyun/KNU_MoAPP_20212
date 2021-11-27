@@ -1,9 +1,12 @@
 package com.example.team_practice;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -20,6 +23,9 @@ public class LoginActivity extends AppCompatActivity {
     private EditText et_id, et_pass;
     private Button btn_login, btn_register;
 
+    //자동로그인 구현
+    CheckBox Auto_Login;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +35,38 @@ public class LoginActivity extends AppCompatActivity {
         et_pass = findViewById(R.id.et_pass);
         btn_login = findViewById(R.id.btn_login);
         btn_register = findViewById(R.id.btn_register);
+        Auto_Login = findViewById(R.id.Auto_Login);
+
+        SharedPreferences setting = getSharedPreferences("setting", 0);
+        SharedPreferences.Editor editor = setting.edit();
+
+        if(setting.getBoolean("Auto_Login_enabled", false)){
+            et_id.setText(setting.getString("ID", ""));
+            et_pass.setText(setting.getString("PW", ""));
+            Auto_Login.setChecked(true);
+        }
+
+        Auto_Login.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    String ID = et_id.getText().toString();
+                    String PW = et_pass.getText().toString();
+
+                    editor.putString("ID", ID);
+                    editor.putString("PW", PW);
+                    editor.putBoolean("Auto_Login_enabled", true);
+                    editor.commit();
+                }
+                else{
+                    //			editor.remove("ID");
+                    //			editor.remove("PW");
+                    //			editor.remove("Auto_Login_enabled");
+                    editor.clear();
+                    editor.commit();
+                }
+            }
+        });
 
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
