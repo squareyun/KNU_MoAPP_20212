@@ -47,7 +47,7 @@ class MainCamera : AppCompatActivity(),SensorEventListener{
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.camera_main)
 
         stepCountView = findViewById(R.id.stepcount)
         distance = findViewById(R.id.distance)
