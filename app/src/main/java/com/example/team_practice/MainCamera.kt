@@ -154,4 +154,3 @@ class MainCamera : AppCompatActivity(),SensorEventListener{
     }
 }
 
-}

@@ -40,11 +40,6 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences setting = getSharedPreferences("setting", 0);
         SharedPreferences.Editor editor = setting.edit();
 
-        if(setting.getBoolean("Auto_Login_enabled", false)){
-            et_id.setText(setting.getString("ID", ""));
-            et_pass.setText(setting.getString("PW", ""));
-            Auto_Login.setChecked(true);
-        }
 
         Auto_Login.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -112,7 +107,13 @@ public class LoginActivity extends AppCompatActivity {
                 queue.add(loginRequest);
             }
         });
+        if(setting.getBoolean("Auto_Login_enabled", false)){
+            et_id.setText(setting.getString("ID", ""));
+            et_pass.setText(setting.getString("PW", ""));
+            Auto_Login.setChecked(true);
 
+            btn_login.performClick();
+        }
 
     }
 }
