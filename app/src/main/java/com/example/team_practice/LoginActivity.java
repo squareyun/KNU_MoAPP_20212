@@ -108,11 +108,15 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         if(setting.getBoolean("Auto_Login_enabled", false)){
-            et_id.setText(setting.getString("ID", ""));
-            et_pass.setText(setting.getString("PW", ""));
-            Auto_Login.setChecked(true);
 
-            btn_login.performClick();
+            if(setting.getString("ID", "").isEmpty() || setting.getString("PW", "").isEmpty()) {
+                Toast.makeText(getApplicationContext(),"자동 로그인 실패",Toast.LENGTH_SHORT).show();
+            } else {
+                Intent intent = new Intent(LoginActivity.this, FriendListActivity.class);
+                intent.putExtra("userID", setting.getString("ID", ""));
+                intent.putExtra("userPass", setting.getString("PW", ""));
+                startActivity(intent);
+            }
         }
 
     }
