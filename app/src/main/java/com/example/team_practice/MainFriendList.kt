@@ -18,16 +18,6 @@ class MainFriendList : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.friend_main)
 
-        var intent = intent
-        var userID = intent.getStringExtra("userID")
-        MyData.name = userID
-        Toast.makeText(applicationContext, userID, Toast.LENGTH_SHORT).show()
-
-        var firebaseDatabase = FirebaseDatabase.getInstance()
-        var myRef = firebaseDatabase.getReference()
-
-        myRef.child("test").setValue("team test")
-
         var myList = findViewById<ListView>(R.id.myListView)
         var friendList = findViewById<ListView>(R.id.friendListView)
 

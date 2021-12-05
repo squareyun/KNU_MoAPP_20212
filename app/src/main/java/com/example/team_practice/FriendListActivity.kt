@@ -14,6 +14,7 @@ class FriendListActivity : TabActivity() {
 
         var intent = intent
         var userID = intent.getStringExtra("userID")
+        MyData.name = userID
 
         var tabHost = this.tabHost
 
@@ -23,7 +24,6 @@ class FriendListActivity : TabActivity() {
         tabHost.addTab(tabSpecMap)
 
         var friendList_intent = Intent(applicationContext, MainFriendList::class.java)
-        friendList_intent.putExtra("userID", userID)
         var tabSpecFriend = tabHost.newTabSpec("Friend").setIndicator("Friend")
         tabSpecFriend.setContent(friendList_intent)
         tabHost.addTab(tabSpecFriend)
