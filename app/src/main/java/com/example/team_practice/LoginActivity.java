@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        
+
         et_id = findViewById(R.id.et_id);
         et_pass = findViewById(R.id.et_pass);
         Button btn_login = findViewById(R.id.btn_login);
@@ -38,7 +38,6 @@ public class LoginActivity extends AppCompatActivity {
 
         SharedPreferences setting = getSharedPreferences("setting", 0);
         SharedPreferences.Editor editor = setting.edit();
-
 
         Auto_Login.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -51,11 +50,36 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString("PW", PW);
                     editor.putBoolean("Auto_Login_enabled", true);
                     editor.commit();
+
+                    String userID = et_id.getText().toString();
+                    String userPass = et_pass.getText().toString();
+
+                    Response.Listener<String> responseListener = new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                boolean success = jsonObject.getBoolean("success");
+                                if (success) { // 로그인에 성공한 경우
+                                    String userID = jsonObject.getString("userID");
+                                    String userPass = jsonObject.getString("userPassword");
+
+                                    Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(LoginActivity.this, FriendListActivity.class);
+                                    intent.putExtra("userID", userID);
+                                    intent.putExtra("userPass", userPass);
+                                    startActivity(intent);
+                                } else { // 로그인에 실패한 경우
+                                    Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+
                 }
                 else{
-                    //			editor.remove("ID");
-                    //			editor.remove("PW");
-                    //			editor.remove("Auto_Login_enabled");
                     editor.clear();
                     editor.commit();
                 }
@@ -105,17 +129,13 @@ public class LoginActivity extends AppCompatActivity {
                 queue.add(loginRequest);
             }
         });
+
         if(setting.getBoolean("Auto_Login_enabled", false)){
+            et_id.setText(setting.getString("ID", ""));
+            et_pass.setText(setting.getString("PW", ""));
+            Auto_Login.setChecked(true);
 
-            if(setting.getString("ID", "").isEmpty() || setting.getString("PW", "").isEmpty()) {
-                Toast.makeText(getApplicationContext(),"자동 로그인 실패",Toast.LENGTH_SHORT).show();
-            } else {
-                Intent intent = new Intent(LoginActivity.this, FriendListActivity.class);
-                intent.putExtra("userID", setting.getString("ID", ""));
-                intent.putExtra("userPass", setting.getString("PW", ""));
-                startActivity(intent);
-            }
+            btn_login.performClick();
         }
-
     }
 }

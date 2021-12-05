@@ -1,10 +1,8 @@
 package com.example.team_practice
 
 import android.Manifest
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.app.AlertDialog
+import android.content.*
 import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -14,6 +12,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -33,6 +33,7 @@ import com.naver.maps.map.util.MarkerIcons
 import com.naver.maps.map.MapFragment
 import kotlin.random.Random
 
+
 class MainMap : AppCompatActivity(), OnMapReadyCallback, SensorEventListener {
     private lateinit var naverMap: NaverMap
     private lateinit var locationSource: FusedLocationSource
@@ -46,8 +47,8 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, SensorEventListener {
     private val knuLocations = ArrayList<KnuLocation>()
     private val missonLocations = ArrayList<KnuLocation>()
 
-
     private val markers = mutableListOf<Marker>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,6 +100,40 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, SensorEventListener {
         }
         registerReceiver(receiver, intentFilter)
     }
+
+//    로그아웃 구현
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        super.onCreateOptionsMenu(menu)
+        var mInflater = menuInflater
+        mInflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.itemLogout ->{
+                AlertDialog.Builder(this /* 해당 액티비티를 가르킴 */)
+                    .setTitle("로그아웃").setMessage("로그아웃 하시겠습니까?")
+                    .setPositiveButton(
+                        "로그아웃",
+                        DialogInterface.OnClickListener { dialog, whichButton ->
+                            val i = Intent(
+                                this@MainMap  /*현재 액티비티 위치*/,
+                                LoginActivity::class.java /*이동 액티비티 위치*/
+                            )
+                            i.flags =
+                                Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                            startActivity(i)
+                        })
+                    .setNegativeButton("취소",
+                        DialogInterface.OnClickListener { dialog, whichButton -> })
+                    .show()
+
+            }
+        }
+        return true
+    }
+//    로그아웃 구현
 
     @UiThread
     override fun onMapReady(map: NaverMap) {
