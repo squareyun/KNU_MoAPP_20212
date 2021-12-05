@@ -33,12 +33,8 @@ import java.lang.Exception
 import java.util.*
 
 
-class MainCamera : AppCompatActivity(),SensorEventListener{
+class MainCamera : AppCompatActivity(){
    private var imageView: ImageView? = null
-    var sensorManager: SensorManager? = null
-    var stepCountSensor: Sensor? = null
-    var stepCountView: TextView? = null
-    var currentSteps = 0
     var today : TextView? = null
     var now = Date()
     var dFormat :SimpleDateFormat? = null
@@ -53,26 +49,13 @@ class MainCamera : AppCompatActivity(),SensorEventListener{
         super.onCreate(savedInstanceState)
         setContentView(R.layout.camera_main)
 
-        stepCountView = findViewById(R.id.stepcount)
         distance = findViewById(R.id.distance)
         today = findViewById(R.id.date)
 
-        dFormat = SimpleDateFormat("yyyy:MM:dd")
+        SimpleDateFormat("yyyy:MM:dd").also { dFormat = it }
         today!!.text = dFormat!!.format(now).toString()
 
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACTIVITY_RECOGNITION
-            ) == PackageManager.PERMISSION_DENIED
-        ) {
-            requestPermissions(arrayOf(Manifest.permission.ACTIVITY_RECOGNITION), 0)
-        }
-        sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
-        stepCountSensor = sensorManager!!.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR)
 
-        if (stepCountSensor == null) {
-            Toast.makeText(this, "No Step Sensor", Toast.LENGTH_SHORT).show()
-        }
         imageView = findViewById(R.id.image)
         imageView?.setOnClickListener(View.OnClickListener {
             val intent = Intent()
@@ -84,31 +67,6 @@ class MainCamera : AppCompatActivity(),SensorEventListener{
         shareButton.setOnClickListener { ScreenShot() }
     }
 
-    public override fun onStart() {
-        super.onStart()
-        if (stepCountSensor != null) {
-        
-            sensorManager!!.registerListener(
-                this,
-                stepCountSensor,
-                SensorManager.SENSOR_DELAY_NORMAL
-            )
-        }
-    }
-    override fun onSensorChanged(event: SensorEvent) {
-
-        if (event.sensor.type == Sensor.TYPE_STEP_DETECTOR) {
-            if (event.values[0] == 1.0f) {
-                currentSteps++
-                stepCountView!!.text = currentSteps.toString()
-                temp = currentSteps.toDouble()
-                KMS = temp * 60/1000000
-                distance!!.text = KMS.toString()
-            }
-        }
-    }
-
-    override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE) {
