@@ -5,16 +5,14 @@ public class ChatItem {
     String name;
     String message;
     String time;
-    int profileImgUrl;
 
     public ChatItem() {
     }
 
-    public ChatItem(String name, String message, String time, int profileImgUrl) {
+    public ChatItem(String name, String message, String time) {
         this.name = name;
         this.message = message;
         this.time = time;
-        this.profileImgUrl = profileImgUrl;
     }
 
     public String getName() {
@@ -41,11 +39,4 @@ public class ChatItem {
         this.time = time;
     }
 
-    public int getProfileImgUrl() {
-        return profileImgUrl;
-    }
-
-    public void setProfileImgUrl(int profileImgUrl) {
-        this.profileImgUrl = profileImgUrl;
-    }
 }

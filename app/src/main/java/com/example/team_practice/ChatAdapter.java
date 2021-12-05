@@ -48,12 +48,10 @@ public class ChatAdapter extends BaseAdapter {
             itemView = layoutInflater.inflate(R.layout.chat_left_item, viewGroup, false);
         }
 
-        ImageView img = itemView.findViewById(R.id.chatItemImg);
         TextView name = itemView.findViewById(R.id.chatItemName);
         TextView message = itemView.findViewById(R.id.chatItemMsg);
         TextView time = itemView.findViewById(R.id.chatItemTime);
 
-        img.setImageResource(R.drawable.ic_launcher);
         name.setText(item.getName());
         message.setText(item.getMessage());
         time.setText(item.getTime());

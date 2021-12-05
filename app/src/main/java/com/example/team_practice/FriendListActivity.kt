@@ -3,6 +3,7 @@ package com.example.team_practice
 import android.app.TabActivity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 
 @Suppress("deprecation")
 class FriendListActivity : TabActivity() {
@@ -10,6 +11,9 @@ class FriendListActivity : TabActivity() {
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.tab_adaptor)
+
+        var intent = intent
+        var userID = intent.getStringExtra("userID")
 
         var tabHost = this.tabHost
 
@@ -19,6 +23,7 @@ class FriendListActivity : TabActivity() {
         tabHost.addTab(tabSpecMap)
 
         var friendList_intent = Intent(applicationContext, MainFriendList::class.java)
+        friendList_intent.putExtra("userID", userID)
         var tabSpecFriend = tabHost.newTabSpec("Friend").setIndicator("Friend")
         tabSpecFriend.setContent(friendList_intent)
         tabHost.addTab(tabSpecFriend)

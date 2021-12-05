@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1087508476001",
+    "firebase_url": "https://walkchat-8d8ac-default-rtdb.firebaseio.com",
+    "project_id": "walkchat-8d8ac",
+    "storage_bucket": "walkchat-8d8ac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1087508476001:android:f8e7ec57607315f1547a20",
+        "android_client_info": {
+          "package_name": "com.example.team_practice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1087508476001-shs40lidq8vuoa7oj3sbe6voagg7eqir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQZNoVdw8k1Bd385d_EWRMW7xhgVnB0-U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1087508476001-shs40lidq8vuoa7oj3sbe6voagg7eqir.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

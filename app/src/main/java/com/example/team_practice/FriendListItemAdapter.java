@@ -48,19 +48,21 @@ public class FriendListItemAdapter extends BaseAdapter {
 
         TextView nameText = view.findViewById(R.id.friendName);
         TextView walkCntText = view.findViewById(R.id.friendWalkCnt);
-        ImageView profileImage = view.findViewById(R.id.friendProfile);
         Button chatBtn = view.findViewById(R.id.friendChatBtn);
 
         chatBtn.setOnClickListener(new View.OnClickListener(){
 
             public void onClick(View v){
                 //Toast.makeText(context, listItem.getName() + " 과 대화", Toast.LENGTH_SHORT).show();
+                Intent callIntent = new Intent(context, ChatActivity.class);
+                callIntent.putExtra("otherName", items.get(i).getName());
+                callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(callIntent);
             }
         });
 
         nameText.setText(listItem.getName());
         walkCntText.setText(listItem.getWalkCnt());
-        profileImage.setImageResource(listItem.getResId());
 
         return view;
     }
@@ -69,5 +71,39 @@ public class FriendListItemAdapter extends BaseAdapter {
         items.add(item);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

@@ -1,17 +1,9 @@
 package com.example.team_practice;
 
 public class FriendListItem {
-    int resId;
     String name;
     String walkCnt;
 
-    public int getResId() {
-        return resId;
-    }
-
-    public void setResId(int resId) {
-        this.resId = resId;
-    }
 
     public String getName() {
         return name;
@@ -29,8 +21,7 @@ public class FriendListItem {
         this.walkCnt = walkCnt;
     }
 
-    public FriendListItem(int resId, String name, String walkCnt) {
-        this.resId = resId;
+    public FriendListItem(String name, String walkCnt) {
         this.name = name;
         this.walkCnt = walkCnt;
     }

@@ -9,6 +9,8 @@
         android:layout_height="60dp"
         android:gravity="center_vertical"
         android:text="친구 이름"
+        android:textStyle="bold"
+        android:textSize="30dp"
         android:id="@+id/chatViewName"/>
 
     <LinearLayout
