@@ -21,7 +21,6 @@ import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText et_id, et_pass;
-    private Button btn_login, btn_register;
 
     //자동로그인 구현
     CheckBox Auto_Login;
@@ -30,21 +29,16 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        
         et_id = findViewById(R.id.et_id);
         et_pass = findViewById(R.id.et_pass);
-        btn_login = findViewById(R.id.btn_login);
-        btn_register = findViewById(R.id.btn_register);
+        Button btn_login = findViewById(R.id.btn_login);
+        Button btn_register = findViewById(R.id.btn_register);
         Auto_Login = findViewById(R.id.Auto_Login);
 
         SharedPreferences setting = getSharedPreferences("setting", 0);
         SharedPreferences.Editor editor = setting.edit();
 
-        if(setting.getBoolean("Auto_Login_enabled", false)){
-            et_id.setText(setting.getString("ID", ""));
-            et_pass.setText(setting.getString("PW", ""));
-            Auto_Login.setChecked(true);
-        }
 
         Auto_Login.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -100,7 +94,6 @@ public class LoginActivity extends AppCompatActivity {
                             }
                             else { // 로그인에 실패한 경우
                                 Toast.makeText(getApplicationContext(),"로그인 실패",Toast.LENGTH_SHORT).show();
-                                return;
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -112,7 +105,17 @@ public class LoginActivity extends AppCompatActivity {
                 queue.add(loginRequest);
             }
         });
+        if(setting.getBoolean("Auto_Login_enabled", false)){
 
+            if(setting.getString("ID", "").isEmpty() || setting.getString("PW", "").isEmpty()) {
+                Toast.makeText(getApplicationContext(),"자동 로그인 실패",Toast.LENGTH_SHORT).show();
+            } else {
+                Intent intent = new Intent(LoginActivity.this, FriendListActivity.class);
+                intent.putExtra("userID", setting.getString("ID", ""));
+                intent.putExtra("userPass", setting.getString("PW", ""));
+                startActivity(intent);
+            }
+        }
 
     }
 }

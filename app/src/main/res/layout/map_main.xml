@@ -1,39 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/stepCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0"
-        android:textSize="20dp"
-        android:layout_marginTop="10dp"/>
+
+    <fragment
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.naver.maps.map.MapFragment" />
+
+<!--    <TextView-->
+<!--        android:id="@+id/stepCount"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="0"-->
+<!--        android:textSize="20dp"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_gravity="top|left"-->
+<!--        android:visibility="invisible"/>-->
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="미션(1/5): "
-        android:textSize="20dp"
+        android:id="@+id/stepCount"
+        android:layout_width="330dp"
+        android:layout_height="35dp"
+        android:text="미션을 수행하세요"
+        android:textSize="15dp"
+        android:textColor="@color/black"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginLeft = "10dp"
+        android:gravity="left|center"
+        android:layout_gravity ="top"
+        android:background="@drawable/round_textview"
+        android:backgroundTint="@color/white"
+        android:elevation="10dp"/>
 
 
     <Button
         android:id="@+id/moveToKnuBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:text="학교이동"/>
+        android:layout_marginTop="5dp"
+        android:layout_marginRight = "10dp"
+        android:background="@drawable/round_button"
+        android:layout_gravity="right|top"
+        />
 
-    <com.naver.maps.map.MapView
-        android:id="@+id/map_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
 
-</LinearLayout>
+</FrameLayout>
