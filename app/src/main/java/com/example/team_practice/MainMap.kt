@@ -126,8 +126,14 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, SensorEventListener {
                                 LoginActivity::class.java /*이동 액티비티 위치*/
                             )
                             i.flags =
-                                Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                                Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                             startActivity(i)
+
+                            val sharedPreferences = getSharedPreferences("setting", Context.MODE_PRIVATE)
+                            val editor = sharedPreferences.edit()
+
+                            editor.clear()
+                            editor.apply()
                         })
                     .setNegativeButton("취소",
                         DialogInterface.OnClickListener { dialog, whichButton -> })
