@@ -98,7 +98,7 @@ class MainCamera : AppCompatActivity(){
     companion object {
         private const val REQUEST_CODE = 0
     }
-\
+
     
       fun ScreenShot(view: View): File? {
         view.isDrawingCacheEnabled = true
