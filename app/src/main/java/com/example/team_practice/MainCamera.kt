@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -42,7 +43,7 @@ class MainCamera : AppCompatActivity(){
     var temp = 0.000
     var KMS =0.000
     var distance: TextView? = null
-
+    var Save : Button? = null
 
     @SuppressLint("NewApi")
     @RequiresApi(Build.VERSION_CODES.M)
@@ -65,6 +66,17 @@ class MainCamera : AppCompatActivity(){
             startActivityForResult(intent, REQUEST_CODE)
         })
   
+   Save = findViewById<Button>(R.id.SAVE)
+        Save?.setOnClickListener {
+            val rootView = window.decorView
+            val screenShot = ScreenShot(rootView)
+            if (screenShot != null) {
+                sendBroadcast(
+                    Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,Uri.fromFile(screenShot)))
+                var msg = Toast.makeText(applicationContext, "Screenshot Saved", Toast.LENGTH_SHORT)
+                msg.show()
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -87,18 +99,7 @@ class MainCamera : AppCompatActivity(){
     companion object {
         private const val REQUEST_CODE = 0
     }
-//스크린샷 후 저장 버튼 클릭
-      fun mOnCaptureClick(v: View?) {
 
-        val rootView = window.decorView
-        val screenShot = ScreenShot(rootView)
-        if (screenShot != null) {
-
-            sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(screenShot)))
-                   var msg = Toast.makeText(applicationContext,"Screenshot Saved",Toast.LENGTH_SHORT)
-            msg.show()
-        }
-    }
     
       fun ScreenShot(view: View): File? {
         view.isDrawingCacheEnabled = true
