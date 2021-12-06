@@ -39,6 +39,8 @@ class MainFriendList : AppCompatActivity() {
         databaseReference.child("user").child(MyData.ID).addValueEventListener( object : ValueEventListener{
 
             override fun onDataChange(snapshot: DataSnapshot) {
+                myAdapter.items.clear()
+
                 myName = snapshot.child("userName").getValue(String::class.java)
                 myWalkCntString = snapshot.child("walkCnt").getValue(String::class.java)
 
@@ -51,14 +53,19 @@ class MainFriendList : AppCompatActivity() {
             }
         })
 
-        databaseReference.child("user").child(MyData.ID).child("friendList").addValueEventListener( object : ValueEventListener{
+        databaseReference.child("user").addValueEventListener( object : ValueEventListener{
 
             override fun onDataChange(snapshot: DataSnapshot) {
-                for(childSnap in snapshot.children){
-                    var friendName = childSnap.child("friendName").getValue(String::class.java)
-                    var friendWalkCnt = childSnap.child("friendWalkCnt").getValue(String::class.java)
+
+                friendAdapter.items.clear()
+
+                for(childSnap in snapshot.child(MyData.ID).child("friendList").children){
+                    var friendName = childSnap.getValue(String::class.java)
+                    var friendWalkCnt = snapshot.child(childSnap.key!!).child("walkCnt").getValue(String::class.java)
                     friendAdapter.addItem(FriendListItem(friendName, "현재 걸음 수 : " + friendWalkCnt))
                 }
+
+                friendAdapter.items.sortBy { it.name }
                 friendList.adapter = friendAdapter
             }
 
@@ -122,24 +129,33 @@ class MainFriendList : AppCompatActivity() {
                                 return@OnClickListener
                             }
 
-                            var find : Boolean = false
-
                             var firebaseDatabase = FirebaseDatabase.getInstance()
                             var databaseReference = firebaseDatabase.getReference()
 
                             databaseReference.child("user").addValueEventListener( object : ValueEventListener{
 
                                 override fun onDataChange(snapshot: DataSnapshot) {
+
+                                    for(childSnap in snapshot.child(MyData.ID).child("friendList").children){
+                                        if(findingID.text.toString().equals(childSnap.key)){
+                                            Toast.makeText(applicationContext, "이미 추가된 친구입니다.", Toast.LENGTH_SHORT).show()
+                                            return
+                                        }
+                                    }
+
                                     for(childSnap in snapshot.children){
                                         var newFriendID = childSnap.key
 
                                         if(findingID.text.toString().equals(newFriendID)){
 //                                            Toast.makeText(applicationContext, newFriendID + "exist.", Toast.LENGTH_SHORT).show()
                                             var newFriendName = childSnap.child("userName").getValue(String::class.java)
+                                            databaseReference.child("user").child(MyData.ID).child("friendList").child(newFriendID!!).setValue(newFriendName)
+                                            /*
                                             var newFriendWalkCnt = childSnap.child("walkCnt").getValue(String::class.java)
                                             friendAdapter.addItem(FriendListItem(newFriendName, "현재 걸음 수 : " + newFriendWalkCnt))
                                             friendAdapter.items.sortBy { it.name }
                                             friendAdapter.notifyDataSetChanged()
+                                             */
                                             break;
                                         }
                                     }
