@@ -46,7 +46,7 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, StepListener {
     private val markers = mutableListOf<Marker>()
 
     private var simpleStepDetector: StepDetector? = null
-    private val TEXT_NUM_STEPS = "Number of Steps: "
+    private val TEXT_NUM_STEPS = " 걸음 ᕕ( ᐛ )ᕗ"
     private var numSteps: Int = 0
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -56,8 +56,7 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, StepListener {
         setContentView(R.layout.map_main)
         title = "Walk Walk"
 
-        locationSource =
-            FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
+        locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
 
         // 만보기 센서 세팅
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
@@ -80,7 +79,7 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, StepListener {
 
         stepCountView = findViewById<TextView>(R.id.stepCountView)
 
-        // location정보 저장
+        // location 정보 저장
         setLocationList()
 
         val fm = supportFragmentManager
@@ -118,7 +117,7 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, StepListener {
 
     override fun step(timeNs: Long) {
         numSteps++
-        stepCountView.text = TEXT_NUM_STEPS.plus(numSteps)
+        stepCountView.text = numSteps.toString() + TEXT_NUM_STEPS
     }
 
     //    로그아웃 구현
@@ -137,6 +136,12 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, StepListener {
                     .setPositiveButton(
                         "로그아웃",
                         DialogInterface.OnClickListener { dialog, whichButton ->
+                            var sharedPreferences = getSharedPreferences("setting", Context.MODE_PRIVATE)
+                            var editor = sharedPreferences.edit()
+
+                            editor.clear()
+                            editor.commit()
+
                             val i = Intent(
                                 this@MainMap  /*현재 액티비티 위치*/,
                                 LoginActivity::class.java /*이동 액티비티 위치*/
@@ -144,12 +149,6 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, StepListener {
                             i.flags =
                                 Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                             startActivity(i)
-
-                            val sharedPreferences = getSharedPreferences("setting", Context.MODE_PRIVATE)
-                            val editor = sharedPreferences.edit()
-
-                            editor.clear()
-                            editor.apply()
                         })
                     .setNegativeButton("취소",
                         DialogInterface.OnClickListener { dialog, whichButton -> })
@@ -180,10 +179,10 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, StepListener {
                 targetPos.longitude = it.longitude
 
                 val distance = curPos.distanceTo(targetPos)
-                var radius = 500 // 500미터 접근 시 성공
+                var radius = 5 // 5미터 접근 시 성공
                 if(distance <= radius) {
                     it.status = 1
-                    Toast.makeText(applicationContext, "${it.name}에 도착하였습니다!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "${it.name}에 도착하였습니다. 미션 성공!", Toast.LENGTH_SHORT).show()
                     markers.get(index).icon = MarkerIcons.BLACK
                     return@addOnLocationChangeListener
                 }
@@ -258,27 +257,27 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, StepListener {
 
     override fun onPause() {
         super.onPause()
-        val sharedPreferences = getPreferences(MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences("step", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.clear()
         editor.putInt("stepCount", numSteps)
-        editor.apply()
+        editor.commit()
     }
 
     override fun onStop() {
         super.onStop()
-        val sharedPreferences = getPreferences(MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences("step", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.clear()
         editor.putInt("stepCount", numSteps)
-        editor.apply()
+        editor.commit()
     }
 
 
     override fun onResume() {
         super.onResume()
 
-        val sharedPreferences = getPreferences(MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences("step", MODE_PRIVATE)
         numSteps = sharedPreferences.getInt("stepCount", 0)
 
     }
@@ -381,6 +380,7 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, StepListener {
         val random = java.util.Random()
         var tempNumList = mutableListOf<Int>()
 
+        // 미션 장소 5개 부여
         while (tempNumList.size < 5) {
             val randomNum = random.nextInt(knuLocations.size)
             if (tempNumList.contains(randomNum) || numList.contains(randomNum))
