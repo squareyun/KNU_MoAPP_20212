@@ -63,8 +63,7 @@ class MainCamera : AppCompatActivity(){
             intent.action = Intent.ACTION_GET_CONTENT
             startActivityForResult(intent, REQUEST_CODE)
         })
-        val shareButton = findViewById<Button>(R.id.share)
-        shareButton.setOnClickListener { ScreenShot() }
+  
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -87,32 +86,36 @@ class MainCamera : AppCompatActivity(){
     companion object {
         private const val REQUEST_CODE = 0
     }
+//스크린샷 후 저장 버튼 클릭
+      fun mOnCaptureClick(v: View?) {
 
-    fun ScreenShot() {
-        val view = window.decorView.rootView
+        val rootView = window.decorView
+        val screenShot = ScreenShot(rootView)
+        if (screenShot != null) {
+
+            sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(screenShot)))
+        }
+    }
+    
+      fun ScreenShot(view: View): File? {
         view.isDrawingCacheEnabled = true
-
-
-        val screenBitmap = Bitmap.createBitmap(view.drawingCache)
+        val screenBitmap = view.drawingCache
+        val filename = "screenshot.png"
+        val file = File(
+            Environment.getExternalStorageDirectory().toString() + "/Pictures",
+            filename
+        )
+        var os: FileOutputStream? = null
         try {
-            val cachePath = File(applicationContext.cacheDir, "images")
-            cachePath.mkdirs()
-            val stream =
-                FileOutputStream("$cachePath/image.png") // overwrites this image every time
-            screenBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-            stream.close()
-            val newFile = File(cachePath, "image.png")
-            val contentUri = FileProvider.getUriForFile(
-                applicationContext,
-                "com.example.test.fileprovider", newFile
-            )
-            val Sharing_intent = Intent(Intent.ACTION_SEND)
-            Sharing_intent.type = "image/png"
-            Sharing_intent.putExtra(Intent.EXTRA_STREAM, contentUri)
-            startActivity(Intent.createChooser(Sharing_intent, "Share image"))
+            os = FileOutputStream(file)
+            screenBitmap.compress(Bitmap.CompressFormat.PNG, 90, os)
+            os.close()
         } catch (e: IOException) {
             e.printStackTrace()
+            return null
         }
+        view.isDrawingCacheEnabled = false
+        return file
     }
     //    로그아웃 구현
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
