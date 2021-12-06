@@ -2,6 +2,7 @@ package com.example.team_practice;
 
 public class ChatItem {
 
+    String id;
     String name;
     String message;
     String time;
@@ -9,10 +10,19 @@ public class ChatItem {
     public ChatItem() {
     }
 
-    public ChatItem(String name, String message, String time) {
+    public ChatItem(String id, String name, String message, String time) {
+        this.id = id;
         this.name = name;
         this.message = message;
         this.time = time;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {

@@ -5,10 +5,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -44,7 +41,9 @@ class MainFriendList : AppCompatActivity() {
                 myName = snapshot.child("userName").getValue(String::class.java)
                 myWalkCntString = snapshot.child("walkCnt").getValue(String::class.java)
 
-                myAdapter.addItem(FriendListItem(myName, "현재 걸음 수 : " + myWalkCntString))
+                MyData.NAME = myName!!
+
+                myAdapter.addItem(FriendListItem(MyData.ID, myName, "현재 걸음 수 : " + myWalkCntString))
                 myList.adapter = myAdapter
             }
 
@@ -62,7 +61,7 @@ class MainFriendList : AppCompatActivity() {
                 for(childSnap in snapshot.child(MyData.ID).child("friendList").children){
                     var friendName = childSnap.getValue(String::class.java)
                     var friendWalkCnt = snapshot.child(childSnap.key!!).child("walkCnt").getValue(String::class.java)
-                    friendAdapter.addItem(FriendListItem(friendName, "현재 걸음 수 : " + friendWalkCnt))
+                    friendAdapter.addItem(FriendListItem(childSnap.key!!, friendName, "현재 걸음 수 : " + friendWalkCnt))
                 }
 
                 friendAdapter.items.sortBy { it.name }
@@ -111,6 +110,9 @@ class MainFriendList : AppCompatActivity() {
             }
             R.id.itemFriendAdd ->{
                 var dialogView = View.inflate(this, R.layout.friend_find, null)
+
+                Toast.makeText(applicationContext, MyData.ID, Toast.LENGTH_SHORT).show()
+
                 AlertDialog.Builder(this /* 해당 액티비티를 가르킴 */)
                     .setTitle("친구찾기").setMessage("아이디를 입력해주세요.")
                     .setView(dialogView)
@@ -129,6 +131,17 @@ class MainFriendList : AppCompatActivity() {
                                 return@OnClickListener
                             }
 
+                            for(searchID in friendAdapter.items){
+                                if(findingID.text.toString().equals(searchID.ID)) {
+                                    Toast.makeText(
+                                        applicationContext,
+                                        "이미 추가된 아이디입니다.",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    return@OnClickListener
+                                }
+                            }
+
                             var firebaseDatabase = FirebaseDatabase.getInstance()
                             var databaseReference = firebaseDatabase.getReference()
 
@@ -136,29 +149,24 @@ class MainFriendList : AppCompatActivity() {
 
                                 override fun onDataChange(snapshot: DataSnapshot) {
 
-                                    for(childSnap in snapshot.child(MyData.ID).child("friendList").children){
-                                        if(findingID.text.toString().equals(childSnap.key)){
-                                            Toast.makeText(applicationContext, "이미 추가된 친구입니다.", Toast.LENGTH_SHORT).show()
-                                            return
-                                        }
-                                    }
-
-                                    for(childSnap in snapshot.children){
+                                    for (childSnap in snapshot.children) {
                                         var newFriendID = childSnap.key
 
-                                        if(findingID.text.toString().equals(newFriendID)){
-//                                            Toast.makeText(applicationContext, newFriendID + "exist.", Toast.LENGTH_SHORT).show()
+                                        if (findingID.text.toString().equals(newFriendID)) {
+                                            //Toast.makeText(applicationContext, newFriendID + "exist.", Toast.LENGTH_SHORT).show()
                                             var newFriendName = childSnap.child("userName").getValue(String::class.java)
                                             databaseReference.child("user").child(MyData.ID).child("friendList").child(newFriendID!!).setValue(newFriendName)
-                                            /*
-                                            var newFriendWalkCnt = childSnap.child("walkCnt").getValue(String::class.java)
-                                            friendAdapter.addItem(FriendListItem(newFriendName, "현재 걸음 수 : " + newFriendWalkCnt))
-                                            friendAdapter.items.sortBy { it.name }
-                                            friendAdapter.notifyDataSetChanged()
-                                             */
-                                            break;
+                                                    /*
+                                        var newFriendWalkCnt = childSnap.child("walkCnt").getValue(String::class.java)
+                                        friendAdapter.addItem(FriendListItem(newFriendName, "현재 걸음 수 : " + newFriendWalkCnt))
+                                        friendAdapter.items.sortBy { it.name }
+                                        friendAdapter.notifyDataSetChanged()
+                                         */
+                                            return
                                         }
+
                                     }
+                                    Toast.makeText(applicationContext, "존재하지 않는 아이디입니다.", Toast.LENGTH_SHORT).show()
                                 }
 
                                 override fun onCancelled(error: DatabaseError) {
@@ -177,6 +185,7 @@ class MainFriendList : AppCompatActivity() {
         return true
     }
 //    로그아웃 구현
+
 }
 
 

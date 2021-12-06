@@ -41,7 +41,7 @@ public class ChatAdapter extends BaseAdapter {
 
         View itemView = null;
 
-        if(item.getName().equals(MyData.ID)){
+        if(item.getName().equals(MyData.NAME)){
             itemView = layoutInflater.inflate(R.layout.chat_right_item, viewGroup, false);
         }
         else{

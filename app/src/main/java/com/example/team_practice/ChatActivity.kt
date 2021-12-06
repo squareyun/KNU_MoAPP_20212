@@ -61,7 +61,7 @@ class ChatActivity : AppCompatActivity() {
                 return@setOnClickListener
 
             var time = LocalDateTime.now().format(formatter).toString()
-            var newItem : ChatItem = ChatItem(myID, chatInput.text.toString(), time)
+            var newItem : ChatItem = ChatItem(MyData.ID, MyData.NAME, chatInput.text.toString(), time)
             databaseReference.child("chat").child(chatName).push().setValue(newItem)
             chatInput.setText("")
 

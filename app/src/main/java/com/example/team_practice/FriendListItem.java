@@ -1,6 +1,7 @@
 package com.example.team_practice;
 
 public class FriendListItem {
+    String ID;
     String name;
     String walkCnt;
 
@@ -21,8 +22,18 @@ public class FriendListItem {
         this.walkCnt = walkCnt;
     }
 
-    public FriendListItem(String name, String walkCnt) {
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    public FriendListItem(String ID, String name, String walkCnt) {
+        this.ID = ID;
         this.name = name;
         this.walkCnt = walkCnt;
     }
+
 }
