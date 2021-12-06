@@ -85,7 +85,7 @@
             android:layout_margin="40dp"
             android:layout_weight="1"
             android:text="갤러리 저장"
-            android:onClick="mOnCaptureClick"
+          
             />
     </LinearLayout>
 
