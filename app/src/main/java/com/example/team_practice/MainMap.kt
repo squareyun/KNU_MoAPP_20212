@@ -47,6 +47,7 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var naverMap: NaverMap
     private lateinit var moveToKnuBtn: Button
     private lateinit var locationSource: FusedLocationSource
+    private var numList = mutableListOf<Int>()
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
@@ -54,7 +55,7 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback {
 
     private var sensorManager: SensorManager? = null
     private lateinit var sensor: Sensor
-    private var MagnitudePrevious = 0.0
+    private var magnitudePrevious = 0.0
     private var stepCount = 0
 
 
@@ -83,15 +84,17 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback {
                     val x_acceleration = sensorEvent.values[0]
                     val y_acceleration = sensorEvent.values[1]
                     val z_acceleration = sensorEvent.values[2]
-                    val Magnitude =
-                        Math.sqrt((x_acceleration * x_acceleration + y_acceleration * y_acceleration + z_acceleration * z_acceleration).toDouble())
-                    val MagnitudeDelta = Magnitude - MagnitudePrevious
-                    MagnitudePrevious = Magnitude
-                    if (MagnitudeDelta > 15) {
+                    val magnitude =
+                       sqrt((x_acceleration * x_acceleration + y_acceleration * y_acceleration + z_acceleration * z_acceleration).toDouble())
+                    val magnitudeDelta = magnitude - magnitudePrevious
+                    magnitudePrevious = magnitude
+                    if (magnitudeDelta > 15) {
                         stepCount++
                     }
                     var stepCountView = findViewById<TextView>(R.id.stepCountView)
                     stepCountView.text = stepCount.toString()
+                } else {
+                    Toast.makeText(applicationContext, "만보기를 위한 센서를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -112,8 +115,8 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback {
         moveToKnu()
 
         // 날짜 바뀌면 마커 바뀌는 작업
-        //  val intentFilter = IntentFilter(Intent.ACTION_TIME_TICK)
-        val intentFilter = IntentFilter(Intent.ACTION_DATE_CHANGED)
+          val intentFilter = IntentFilter(Intent.ACTION_TIME_TICK)
+//        val intentFilter = IntentFilter(Intent.ACTION_DATE_CHANGED)
         val receiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
                 Log.i("마커 변경", "receive : ${intent?.action}")
@@ -302,6 +305,7 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback {
     )
 
     private fun setLocationList() {
+        // total: 65
         knuLocations.add(KnuLocation(35.887459016289945, 128.60852113361165, "공대 1호관"))
         knuLocations.add(KnuLocation(35.887924046584786, 128.6085425912978, "공대 2호관"))
         knuLocations.add(KnuLocation(35.88760243713861, 128.60965302578714, "공대 3호관"))
@@ -316,20 +320,72 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback {
         knuLocations.add(KnuLocation(35.88826117098753, 128.61035405512777, "IT대학 3호관"))
         knuLocations.add(KnuLocation(35.88833505373963, 128.61008046981883, "공대 12호관"))
         knuLocations.add(KnuLocation(35.88805320883473, 128.61142374237969, "IT융복합공학관"))
+        knuLocations.add(KnuLocation(35.88646247465816, 128.61490608820674, "KNU센트럴파크"))
+        knuLocations.add(KnuLocation(35.886671089344325, 128.61316801680104, "수의과대학"))
+        knuLocations.add(KnuLocation(35.88651028224115, 128.61262084613773, "창업보육센터"))
+        knuLocations.add(KnuLocation(35.88684928062104, 128.6107003844785, "화목관"))
+        knuLocations.add(KnuLocation(35.88643205164111, 128.61068429122503, "협동관"))
+        knuLocations.add(KnuLocation(35.88690143408896, 128.60989572180506, "봉사관"))
+        knuLocations.add(KnuLocation(35.88685362674469, 128.609412924201, "진리관"))
+        knuLocations.add(KnuLocation(35.886640666405874, 128.6096489585852, "긍지관"))
+        knuLocations.add(KnuLocation(35.88621474400703, 128.60964895856355, "문화관"))
+        knuLocations.add(KnuLocation(35.8866493586704, 128.6084473289487, "화학관"))
+        knuLocations.add(KnuLocation(35.88616693624587, 128.60852243079822, "성실관"))
+        knuLocations.add(KnuLocation(35.8872013158625, 128.60783578527122, "연구실안전관리센터"))
+        knuLocations.add(KnuLocation(35.88695793364532, 128.60608698498893, "생물학관"))
+        knuLocations.add(KnuLocation(35.88717322984431, 128.60492091267042, "학군단"))
+        knuLocations.add(KnuLocation(35.88833636728088, 128.60433138658894, "백호관"))
+        knuLocations.add(KnuLocation(35.88742615756613, 128.6055548303968, "야구장"))
+        knuLocations.add(KnuLocation(35.88757604113011, 128.60638415290677, "축구장"))
+        knuLocations.add(KnuLocation(35.888459831561995, 128.60758986028998, "농구장"))
+        knuLocations.add(KnuLocation(35.88851668323955, 128.6079853833282, "축구장"))
+        knuLocations.add(KnuLocation(35.88876476280895, 128.60903160558803, "테니스장"))
+        knuLocations.add(KnuLocation(35.887642828929465, 128.61563678214594, "로스쿨"))
+        knuLocations.add(KnuLocation(35.88861448020615, 128.61371658157117, "박물관"))
+        knuLocations.add(KnuLocation(35.88860931188914, 128.61568143797518, "사회과학대학"))
+        knuLocations.add(KnuLocation(35.889089964787566, 128.61570695559055, "경상대학"))
+        knuLocations.add(KnuLocation(35.88943107152611, 128.6149350477256, "제4합동강의동"))
+        knuLocations.add(KnuLocation(35.88996340183931, 128.6157771290373, "생활과학대학"))
+        knuLocations.add(KnuLocation(35.890268327308185, 128.6137420991603, "사범대학"))
+        knuLocations.add(KnuLocation(35.89056291519987, 128.6151583268355, "향토생활관"))
+        knuLocations.add(KnuLocation(35.89085233383297, 128.61441193659385, "언어교육센터"))
+        knuLocations.add(KnuLocation(35.89123477823054, 128.61476918320903, "첨성관"))
+        knuLocations.add(KnuLocation(35.891281291612344, 128.6135251994597, "정보화본부"))
+        knuLocations.add(KnuLocation(35.89241310881879, 128.61372934038, "융합학부"))
+        knuLocations.add(KnuLocation(35.89188596309891, 128.61091602315574, "글로벌프라자"))
+        knuLocations.add(KnuLocation(35.891363982011526, 128.61198138363565, "중앙도서관구관"))
+        knuLocations.add(KnuLocation(35.89169474270429, 128.61260656521222, "중앙도서관신관"))
+        knuLocations.add(KnuLocation(35.89242861306188, 128.61230673324175, "약학대학"))
+        knuLocations.add(KnuLocation(35.8934208776624, 128.61117757873157, "예술대학"))
+        knuLocations.add(KnuLocation(35.89251647033473, 128.61077567628948, "대강당"))
+        knuLocations.add(KnuLocation(35.89331751736072, 128.61349330238826, "누리관"))
+        knuLocations.add(KnuLocation(35.89138465457643, 128.60858754068016, "농대3호관"))
+        knuLocations.add(KnuLocation(35.891115910566306, 128.60829408810338, "농대2호관"))
+        knuLocations.add(KnuLocation(35.89093502465941, 128.60953807184265, "농대1호관"))
+        knuLocations.add(KnuLocation(35.890671447308414, 128.60727976279873, "복현회관"))
+        knuLocations.add(KnuLocation(35.890144289975254, 128.60659716658117, "자연과학대학"))
+        knuLocations.add(KnuLocation(35.889684316504535, 128.60639940506204, "제2과학관"))
+        knuLocations.add(KnuLocation(35.889725662543775, 128.6077837356959, "제1과학관"))
+        knuLocations.add(KnuLocation(35.8896998212735, 128.60900858125984, "생명공학관"))
+        knuLocations.add(KnuLocation(35.88958611957051, 128.60514904186064, "제2체육관"))
+        knuLocations.add(KnuLocation(35.88903311353425, 128.60472162180318, "제1체육관"))
+        knuLocations.add(KnuLocation(35.890307316262806, 128.61206198217036, "본관"))
+        knuLocations.add(KnuLocation(35.89130687477114, 128.61071551330116, "인문대학"))
     }
 
     fun makeMissionLocationList() {
         val random = java.util.Random()
-        var numList = mutableListOf<Int>()
+        var tempNumList = mutableListOf<Int>()
 
-        while (numList.size < 5) {
+        while (tempNumList.size < 5) {
             val randomNum = random.nextInt(knuLocations.size)
-            if (numList.contains(randomNum))
+            if (tempNumList.contains(randomNum) || numList.contains(randomNum))
                 continue
-            numList.add(randomNum)
+            tempNumList.add(randomNum)
         }
+        numList = tempNumList
 
-        val it = numList.iterator()
+        val it = tempNumList.iterator()
         while (it.hasNext()) {
             missonLocations.add(knuLocations.get(it.next()))
         }
