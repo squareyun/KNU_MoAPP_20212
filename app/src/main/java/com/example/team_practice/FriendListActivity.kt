@@ -14,7 +14,7 @@ class FriendListActivity : TabActivity() {
 
         var intent = intent
         var userID = intent.getStringExtra("userID")
-        MyData.name = userID
+        MyData.ID = userID
 
         var tabHost = this.tabHost
 
