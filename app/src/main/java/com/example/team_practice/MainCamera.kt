@@ -6,7 +6,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -22,12 +21,10 @@ import java.io.IOException
 import android.icu.text.SimpleDateFormat
 import android.net.Uri
 import android.os.Build
-import android.view.Menu
-import android.view.MenuItem
+import android.os.Environment
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import java.lang.Exception
 import java.util.*
