@@ -91,6 +91,8 @@ class MainCamera : AppCompatActivity(){
         if (screenShot != null) {
 
             sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(screenShot)))
+                   var msg = Toast.makeText(applicationContext,"Screenshot Saved",Toast.LENGTH_SHORT)
+            msg.show()
         }
     }
     
