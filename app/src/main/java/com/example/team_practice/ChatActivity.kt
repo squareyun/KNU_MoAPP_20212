@@ -37,16 +37,16 @@ class ChatActivity : AppCompatActivity() {
         adapter = ChatAdapter(chatItems, getLayoutInflater())
         chatListView.adapter = adapter
 
-        var myName = MyData.name
-        var otherName = intent.getStringExtra("otherName")
+        var myID = MyData.ID
+        var otherID = intent.getStringExtra("otherID")
 
         var chatViewName : TextView = findViewById(R.id.chatViewName)
-        chatViewName.setText(otherName)
+        chatViewName.setText(otherID)
 
         var arrayForSort : ArrayList<String> = ArrayList()
 
-        arrayForSort.add(myName)
-        arrayForSort.add(otherName!!)
+        arrayForSort.add(myID)
+        arrayForSort.add(otherID!!)
         arrayForSort.sort()
 
         var chatName = arrayForSort[0] + "_" + arrayForSort[1]
@@ -61,7 +61,7 @@ class ChatActivity : AppCompatActivity() {
                 return@setOnClickListener
 
             var time = LocalDateTime.now().format(formatter).toString()
-            var newItem : ChatItem = ChatItem(myName, chatInput.text.toString(), time)
+            var newItem : ChatItem = ChatItem(myID, chatInput.text.toString(), time)
             databaseReference.child("chat").child(chatName).push().setValue(newItem)
             chatInput.setText("")
 
