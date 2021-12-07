@@ -43,13 +43,13 @@
                 android:id="@+id/chatItemMsg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#ffffff"
                 android:maxLength="150"
                 android:maxLines="15"
                 android:padding="10dp"
                 android:text="메세지 내용"
                 android:textColor="#000000"
-                android:textSize="15dp" />
+                android:textSize="20dp"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/chatItemTime"

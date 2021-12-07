@@ -56,6 +56,7 @@ public class FriendListItemAdapter extends BaseAdapter {
                 //Toast.makeText(context, listItem.getName() + " 과 대화", Toast.LENGTH_SHORT).show();
                 Intent callIntent = new Intent(context, ChatActivity.class);
                 callIntent.putExtra("otherID", items.get(i).getID());
+                callIntent.putExtra("otherName", items.get(i).getName());
                 callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(callIntent);
             }

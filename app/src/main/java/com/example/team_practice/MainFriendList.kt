@@ -24,6 +24,7 @@ class MainFriendList : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.friend_main)
+        title = "Friend"
 
         var myList = findViewById<ListView>(R.id.myListView)
         var friendList = findViewById<ListView>(R.id.friendListView)

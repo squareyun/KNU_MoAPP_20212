@@ -31,6 +31,9 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.chat_layout)
 
+        var actionBar = supportActionBar
+        actionBar!!.hide()
+
         chatInput = findViewById(R.id.chatInput)
         chatListView = findViewById(R.id.chatListView)
         sendBtn = findViewById(R.id.sendBtn)
@@ -39,9 +42,10 @@ class ChatActivity : AppCompatActivity() {
 
         var myID = MyData.ID
         var otherID = intent.getStringExtra("otherID")
+        var otherName = intent.getStringExtra("otherName")
 
         var chatViewName : TextView = findViewById(R.id.chatViewName)
-        chatViewName.setText(otherID)
+        chatViewName.setText(otherName)
 
         var arrayForSort : ArrayList<String> = ArrayList()
 
