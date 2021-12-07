@@ -7,10 +7,12 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:gravity="center_vertical"
+        android:gravity="center"
         android:text="친구 이름"
         android:textStyle="bold"
         android:textSize="30dp"
+        android:textColor="@color/black"
+        android:background="@drawable/chat_layout_custom"
         android:id="@+id/chatViewName"/>
 
     <LinearLayout
@@ -20,7 +22,9 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/chatListView">
+            android:id="@+id/chatListView"
+            android:divider="@null"
+            android:dividerHeight="0dp">
         </ListView>
     </LinearLayout>
 

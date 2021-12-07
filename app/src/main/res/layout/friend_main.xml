@@ -16,7 +16,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="친구 목록"/>
+            android:text="친구 목록"
+            android:background="@drawable/chat_layout_custom"/>
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
