@@ -4,6 +4,7 @@ plugins {
 }
 
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdk 31
@@ -56,4 +57,9 @@ dependencies {
 
     implementation platform('com.google.firebase:firebase-bom:29.0.1')
     implementation 'com.google.firebase:firebase-analytics'
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }

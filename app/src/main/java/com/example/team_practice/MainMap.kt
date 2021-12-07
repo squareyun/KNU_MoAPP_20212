@@ -18,7 +18,10 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.annotation.UiThread
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.InfoWindow
@@ -49,6 +52,7 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, StepListener {
     private var simpleStepDetector: StepDetector? = null
     private val TEXT_NUM_STEPS = " 걸음 ᕕ( ᐛ )ᕗ"
     private var numSteps: Int = 0
+
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,6 +115,17 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, StepListener {
 
                 // 마커 등록
                 setMarker();
+
+                var firebaseDatabase = FirebaseDatabase.getInstance()
+                var databaseReference = firebaseDatabase.reference
+                databaseReference.child("user").child(MyData.ID).child("walkCnt").setValue("0")
+                numSteps = 0
+
+//                val sharedPreferences = getSharedPreferences("step", MODE_PRIVATE)
+//                val editor = sharedPreferences.edit()
+//                editor.clear()
+//                editor.putInt("stepCount", numSteps)
+//                editor.commit()
             }
         }
         registerReceiver(receiver, intentFilter)
@@ -121,8 +136,7 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, StepListener {
         stepCountView.text = numSteps.toString() + TEXT_NUM_STEPS
 
         var firebaseDatabase = FirebaseDatabase.getInstance()
-        var databaseReference = firebaseDatabase.getReference()
-
+        var databaseReference = firebaseDatabase.reference
         databaseReference.child("user").child(MyData.ID).child("walkCnt").setValue(numSteps.toString())
     }
 
@@ -261,30 +275,26 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, StepListener {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        val sharedPreferences = getSharedPreferences("step", MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.clear()
-        editor.putInt("stepCount", numSteps)
-        editor.commit()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        val sharedPreferences = getSharedPreferences("step", MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.clear()
-        editor.putInt("stepCount", numSteps)
-        editor.commit()
-    }
-
-
     override fun onResume() {
         super.onResume()
 
-        val sharedPreferences = getSharedPreferences("step", MODE_PRIVATE)
-        numSteps = sharedPreferences.getInt("stepCount", 0)
+        var firebaseDatabase = FirebaseDatabase.getInstance()
+        var databaseReference = firebaseDatabase.reference
+        var data : String? = ""
+        databaseReference.child("user").child(MyData.ID).addValueEventListener( object : ValueEventListener{
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                // 카운트를 받아오는 곳
+                data = snapshot.child("walkCnt").getValue(String::class.java)
+                numSteps = Integer.parseInt(data)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
 
     }
 
