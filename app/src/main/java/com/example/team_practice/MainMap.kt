@@ -18,10 +18,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.annotation.UiThread
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.InfoWindow
@@ -53,6 +50,8 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, StepListener {
     private val TEXT_NUM_STEPS = " 걸음 ᕕ( ᐛ )ᕗ"
     private var numSteps: Int = 0
 
+    private var firebaseDatabase = FirebaseDatabase.getInstance()
+    private var databaseReference = firebaseDatabase.reference
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,8 +72,13 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, StepListener {
 
         val stepDetector: SensorEventListener = object : SensorEventListener {
             override fun onSensorChanged(event: SensorEvent) {
-                if (event!!.sensor.type == Sensor.TYPE_ACCELEROMETER) {
-                    simpleStepDetector!!.updateAccelerometer(event.timestamp, event.values[0], event.values[1], event.values[2])
+                if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
+                    simpleStepDetector!!.updateAccelerometer(
+                        event.timestamp,
+                        event.values[0],
+                        event.values[1],
+                        event.values[2]
+                    )
                 }
             }
 
@@ -114,10 +118,8 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, StepListener {
                 makeMissionLocationList()
 
                 // 마커 등록
-                setMarker();
+                setMarker()
 
-                var firebaseDatabase = FirebaseDatabase.getInstance()
-                var databaseReference = firebaseDatabase.reference
                 databaseReference.child("user").child(MyData.ID).child("walkCnt").setValue("0")
                 numSteps = 0
 
@@ -135,9 +137,8 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, StepListener {
         numSteps++
         stepCountView.text = numSteps.toString() + TEXT_NUM_STEPS
 
-        var firebaseDatabase = FirebaseDatabase.getInstance()
-        var databaseReference = firebaseDatabase.reference
-        databaseReference.child("user").child(MyData.ID).child("walkCnt").setValue(numSteps.toString())
+        databaseReference.child("user").child(MyData.ID).child("walkCnt")
+            .setValue(numSteps.toString())
     }
 
     //    로그아웃 구현
@@ -156,11 +157,18 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, StepListener {
                     .setPositiveButton(
                         "로그아웃",
                         DialogInterface.OnClickListener { dialog, whichButton ->
-                            var sharedPreferences = getSharedPreferences("setting", Context.MODE_PRIVATE)
-                            var editor = sharedPreferences.edit()
+                            val sharedPreferences =
+                                getSharedPreferences("setting", Context.MODE_PRIVATE)
+                            val editor = sharedPreferences.edit()
 
                             editor.clear()
                             editor.commit()
+
+                            val sharedPreferences2 = getSharedPreferences("step", MODE_PRIVATE)
+                            val editor2 = sharedPreferences.edit()
+                            editor2.clear()
+                            editor2.putInt("stepCount", 0)
+                            editor2.commit()
 
                             val i = Intent(
                                 this@MainMap  /*현재 액티비티 위치*/,
@@ -192,7 +200,7 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, StepListener {
             curPos.longitude = location.longitude
 
             missonLocations.forEachIndexed { index, it ->
-                if(it.status == 1)
+                if (it.status == 1)
                     return@forEachIndexed
                 val targetPos = Location("")
                 targetPos.latitude = it.latitude
@@ -200,9 +208,13 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, StepListener {
 
                 val distance = curPos.distanceTo(targetPos)
                 var radius = 5 // 5미터 접근 시 성공
-                if(distance <= radius) {
+                if (distance <= radius) {
                     it.status = 1
-                    Toast.makeText(applicationContext, "${it.name}에 도착하였습니다. 미션 성공!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        applicationContext,
+                        "${it.name}에 도착하였습니다. 미션 성공!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     markers.get(index).icon = MarkerIcons.BLACK
                     return@addOnLocationChangeListener
                 }
@@ -227,7 +239,7 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, StepListener {
         makeMissionLocationList()
 
         // 마커 등록
-        setMarker();
+        setMarker()
     }
 
     private fun setMarker() {
@@ -239,7 +251,7 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, StepListener {
             }
         }
 
-        missonLocations!!.forEach {
+        missonLocations.forEach {
             markers += Marker().apply {
                 position = LatLng(it.latitude, it.longitude)
                 width = Marker.SIZE_AUTO
@@ -275,27 +287,29 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, StepListener {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        val sharedPreferences = getSharedPreferences("step", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.clear()
+        editor.putInt("stepCount", numSteps)
+        editor.commit()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        val sharedPreferences = getSharedPreferences("step", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.clear()
+        editor.putInt("stepCount", numSteps)
+        editor.commit()
+    }
+
     override fun onResume() {
         super.onResume()
 
-        var firebaseDatabase = FirebaseDatabase.getInstance()
-        var databaseReference = firebaseDatabase.reference
-        var data : String? = ""
-        databaseReference.child("user").child(MyData.ID).addValueEventListener( object : ValueEventListener{
-
-            override fun onDataChange(snapshot: DataSnapshot) {
-
-                // 카운트를 받아오는 곳
-                data = snapshot.child("walkCnt").getValue(String::class.java)
-                numSteps = Integer.parseInt(data)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-
-        })
-
+        val sharedPreferences = getSharedPreferences("step", MODE_PRIVATE)
+        numSteps = sharedPreferences.getInt("stepCount", 0)
     }
 
     override fun onRequestPermissionsResult(
