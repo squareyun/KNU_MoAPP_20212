@@ -32,6 +32,7 @@
             />
 
         <FrameLayout
+            android:id="@+id/todayFrame"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -70,7 +71,7 @@
                 android:layout_marginHorizontal="10dp"
                 android:textAlignment="center"
                 android:textSize="20dp"
-                android:text = "yyyy-MM-dd"
+                android:text = "yyyyMMdd"
                 android:textColor="@color/black"
                 />
 

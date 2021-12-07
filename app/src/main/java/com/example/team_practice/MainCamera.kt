@@ -48,6 +48,7 @@ class MainCamera : AppCompatActivity(){
     var KMS =0.000
     private lateinit var stepCount: TextView
     private lateinit var distance: TextView
+    private lateinit var todayFrame: FrameLayout
     var Save : Button? = null
 
     @SuppressLint("NewApi")
@@ -59,8 +60,9 @@ class MainCamera : AppCompatActivity(){
 
         distance = findViewById(R.id.distance)
         today = findViewById(R.id.date)
+        todayFrame = findViewById(R.id.todayFrame)
 
-        SimpleDateFormat("yyyy-MM-dd").also { dFormat = it }
+        SimpleDateFormat("yyyyMMdd").also { dFormat = it }
         today!!.text = dFormat!!.format(now).toString()
 
 
@@ -93,7 +95,7 @@ class MainCamera : AppCompatActivity(){
   
    Save = findViewById<Button>(R.id.SAVE)
         Save?.setOnClickListener {
-            val rootView = window.decorView
+            val rootView = todayFrame
             val screenShot = ScreenShot(rootView)
             if (screenShot != null) {
                 sendBroadcast(
