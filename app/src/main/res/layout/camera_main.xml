@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:context=".MainCamera"
     >
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
      <TextView
         android:layout_width="match_parent"
         android:layout_marginTop="40dp"
@@ -20,7 +24,15 @@
         android:textStyle="bold"
         />
 
-    <FrameLayout
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="사진을 선택하려면 아래 화면을 클릭하세요"
+            android:layout_marginLeft="65dp"
+            />
+
+        <FrameLayout
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -32,7 +44,7 @@
             android:layout_height="400dp"
             android:layout_gravity="center"
             android:scaleType="fitXY"
-            app:srcCompat="@mipmap/ic_launcher" />
+            app:srcCompat="@drawable/album" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,16 +54,14 @@
 
             <TextView
 
-                android:id="@+id/stepcount"
+                android:id="@+id/stepCount"
                 android:layout_width="120dp"
                 android:layout_height="40dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="5dp"
-                android:layout_marginTop="100dp"
-                android:text="0"
-                android:textAlignment="center"
-                android:textColor="#FFEB5A"
-                android:textSize="30dp" />
+                android:text="0👣"
+                android:textAlignment="textStart"
+                android:paddingLeft="20dp"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
 
 
             <TextView
@@ -59,10 +69,10 @@
                 android:layout_width="120dp"
                 android:layout_height="40dp"
                 android:layout_marginHorizontal="10dp"
-                android:gravity="center"
+                android:textAlignment="center"
                 android:textSize="20dp"
-                android:text = "yyyy:MM:dd"
-                android:textColor="#FFEB5A"
+                android:text = "yyyy-MM-dd"
+                android:textColor="@color/black"
                 />
 
 
@@ -70,11 +80,11 @@
                 android:id="@+id/distance"
                 android:layout_width="120dp"
                 android:layout_height="40dp"
-                android:gravity="center"
-                android:text="0(km)"
-                android:textAlignment="center"
-                android:textColor="#FFEB5A"
-                android:textSize="30dp" />
+                android:text="0km"
+                android:textAlignment="textEnd"
+                android:paddingRight="10dp"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
         </LinearLayout>
     </FrameLayout>
     <LinearLayout
@@ -88,9 +98,11 @@
             android:layout_height="50dp"
             android:layout_margin="40dp"
             android:layout_weight="1"
+          android:background="#506AD4"
             android:text="갤러리 저장"
           
             />
     </LinearLayout>
+    </LinearLayout>
 
-</LinearLayout>
+</ScrollView>

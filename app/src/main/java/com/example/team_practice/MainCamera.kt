@@ -30,8 +30,13 @@ import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import java.lang.Exception
 import java.util.*
+import kotlin.math.round
 
 
 class MainCamera : AppCompatActivity(){
@@ -41,7 +46,8 @@ class MainCamera : AppCompatActivity(){
     var dFormat :SimpleDateFormat? = null
     var temp = 0.000
     var KMS =0.000
-    var distance: TextView? = null
+    private lateinit var stepCount: TextView
+    private lateinit var distance: TextView
     var Save : Button? = null
 
     @SuppressLint("NewApi")
@@ -53,7 +59,7 @@ class MainCamera : AppCompatActivity(){
         distance = findViewById(R.id.distance)
         today = findViewById(R.id.date)
 
-        SimpleDateFormat("yyyy:MM:dd").also { dFormat = it }
+        SimpleDateFormat("yyyy-MM-dd").also { dFormat = it }
         today!!.text = dFormat!!.format(now).toString()
 
 
@@ -63,6 +69,25 @@ class MainCamera : AppCompatActivity(){
             intent.type = "image/*"
             intent.action = Intent.ACTION_GET_CONTENT
             startActivityForResult(intent, REQUEST_CODE)
+        })
+
+        stepCount = findViewById(R.id.stepCount)
+        var firebaseDatabase = FirebaseDatabase.getInstance()
+        var databaseReference = firebaseDatabase.getReference()
+
+        var myWalkCntString : String? = ""
+        databaseReference.child("user").child(MyData.ID).addValueEventListener( object : ValueEventListener{
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                myWalkCntString = snapshot.child("walkCnt").getValue(String::class.java)
+                stepCount.text = myWalkCntString + "걸음"
+                val step = myWalkCntString!!.toDouble() / 100000
+                distance.text = (round(step * 100) / 100).toString() + "km"
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+
         })
   
    Save = findViewById<Button>(R.id.SAVE)
