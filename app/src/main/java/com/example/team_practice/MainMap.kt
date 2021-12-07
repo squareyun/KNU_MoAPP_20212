@@ -119,9 +119,7 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, StepListener {
         numSteps++
         stepCountView.text = numSteps.toString() + TEXT_NUM_STEPS
         
-         val intent = Intent(this, MainCamera::class.java)
-        intent.putExtra("Steps",Integer.parseInt(stepCountView.text.toString()))
-        startActivity(intent)
+
     }
 
     //    로그아웃 구현
