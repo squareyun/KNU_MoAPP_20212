@@ -104,7 +104,8 @@ class MainCamera : AppCompatActivity(){
       fun ScreenShot(view: View): File? {
         view.isDrawingCacheEnabled = true
         val screenBitmap = view.drawingCache
-        val filename = "screenshot.png"
+        val timestamp = java.text.SimpleDateFormat("yyyyMMdd HHmmss").format(Date())
+        val filename = "walkwalk_$timestamp.png"
         val file = File(
             Environment.getExternalStorageDirectory().toString() + "/Pictures",
             filename
