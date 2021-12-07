@@ -29,7 +29,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import java.lang.Exception
 import java.util.*
@@ -133,7 +132,7 @@ class MainCamera : AppCompatActivity(){
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.itemLogout ->{
-                AlertDialog.Builder(this /* 해당 액티비티를 가르킴 */)
+                android.app.AlertDialog.Builder(this /* 해당 액티비티를 가르킴 */)
                     .setTitle("로그아웃").setMessage("로그아웃 하시겠습니까?")
                     .setPositiveButton(
                         "로그아웃",

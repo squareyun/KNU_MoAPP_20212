@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.annotation.UiThread
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.database.FirebaseDatabase
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.InfoWindow
@@ -118,8 +119,11 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, StepListener {
     override fun step(timeNs: Long) {
         numSteps++
         stepCountView.text = numSteps.toString() + TEXT_NUM_STEPS
-        
 
+        var firebaseDatabase = FirebaseDatabase.getInstance()
+        var databaseReference = firebaseDatabase.getReference()
+
+        databaseReference.child("user").child(MyData.ID).child("walkCnt").setValue(numSteps.toString())
     }
 
     //    로그아웃 구현

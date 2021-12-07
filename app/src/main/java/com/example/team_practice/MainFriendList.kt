@@ -19,6 +19,7 @@ class MainFriendList : AppCompatActivity() {
 
     var myAdapter = FriendListItemAdapter()
     var friendAdapter = FriendListItemAdapter()
+    lateinit var friendDeleteAdapter : ArrayAdapter<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +27,9 @@ class MainFriendList : AppCompatActivity() {
 
         var myList = findViewById<ListView>(R.id.myListView)
         var friendList = findViewById<ListView>(R.id.friendListView)
+
+        var friendDeleteList : ArrayList<String> = ArrayList<String>()
+        friendDeleteAdapter = ArrayAdapter(applicationContext, android.R.layout.simple_spinner_item, friendDeleteList)
 
         var firebaseDatabase = FirebaseDatabase.getInstance()
         var databaseReference = firebaseDatabase.getReference()
@@ -57,15 +61,20 @@ class MainFriendList : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
 
                 friendAdapter.items.clear()
+                friendDeleteList.clear()
 
                 for(childSnap in snapshot.child(MyData.ID).child("friendList").children){
                     var friendName = childSnap.getValue(String::class.java)
                     var friendWalkCnt = snapshot.child(childSnap.key!!).child("walkCnt").getValue(String::class.java)
                     friendAdapter.addItem(FriendListItem(childSnap.key!!, friendName, "현재 걸음 수 : " + friendWalkCnt))
+                    friendDeleteList.add(friendName!!)
                 }
 
                 friendAdapter.items.sortBy { it.name }
                 friendList.adapter = friendAdapter
+
+                friendDeleteList.sort()
+                friendDeleteAdapter.notifyDataSetChanged()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -110,8 +119,6 @@ class MainFriendList : AppCompatActivity() {
             }
             R.id.itemFriendAdd ->{
                 var dialogView = View.inflate(this, R.layout.friend_find, null)
-
-                Toast.makeText(applicationContext, MyData.ID, Toast.LENGTH_SHORT).show()
 
                 AlertDialog.Builder(this /* 해당 액티비티를 가르킴 */)
                     .setTitle("친구찾기").setMessage("아이디를 입력해주세요.")
@@ -181,6 +188,67 @@ class MainFriendList : AppCompatActivity() {
                     .show()
 
             }
+/*
+            R.id.itemFriendDelete ->{
+                var dialogView = View.inflate(this, R.layout.friend_delete, null)
+
+                var deleteName : String = ""
+
+                var spinner = dialogView.findViewById<Spinner>(R.id.friendDeleteSpinner)
+                spinner.adapter = friendDeleteAdapter
+
+                spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+                    override fun onItemSelected( p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long ) {
+                        deleteName = spinner.getItemAtPosition(p2).toString()
+                    }
+
+                    override fun onNothingSelected(p0: AdapterView<*>?) {
+                        TODO("Not yet implemented")
+                    }
+
+                }
+
+                AlertDialog.Builder(this /* 해당 액티비티를 가르킴 */)
+                    .setTitle("친구삭제")
+                    .setView(dialogView)
+                    .setPositiveButton(
+                        "삭제",
+                        DialogInterface.OnClickListener { dialog, whichButton ->
+
+                            var firebaseDatabase = FirebaseDatabase.getInstance()
+                            var databaseReference = firebaseDatabase.getReference()
+
+                            var isDelete = true
+
+                            var childKey = ""
+
+                            databaseReference.child("user").child(MyData.ID).child("friendList").addValueEventListener( object : ValueEventListener{
+
+                                override fun onDataChange(snapshot: DataSnapshot) {
+
+                                    for(childSnap in snapshot.children){
+                                        var friendName = childSnap.getValue(String::class.java)
+
+                                        if(deleteName.equals(friendName) && isDelete){
+                                            childKey = childSnap.key!!
+                                            Toast.makeText(applicationContext, childKey, Toast.LENGTH_SHORT).show()
+                                            databaseReference.child("user").child(MyData.ID).child("friendList").child(childKey).setValue(null)
+                                            return
+                                        }
+                                    }
+                                }
+
+                                override fun onCancelled(error: DatabaseError) {
+                                    TODO("Not yet implemented")
+                                }
+                            })
+                        })
+                    .setNegativeButton("취소",
+                        DialogInterface.OnClickListener { dialog, whichButton -> })
+                    .show()
+            }
+
+ */
         }
         return true
     }
