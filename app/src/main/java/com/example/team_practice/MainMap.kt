@@ -58,7 +58,7 @@ class MainMap : AppCompatActivity(), OnMapReadyCallback, StepListener {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.map_main)
-        title = "Walk Walk"
+        title = "Map"
 
         locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
 

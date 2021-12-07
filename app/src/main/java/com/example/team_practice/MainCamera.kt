@@ -55,6 +55,7 @@ class MainCamera : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.camera_main)
+        title = "Record"
 
         distance = findViewById(R.id.distance)
         today = findViewById(R.id.date)
@@ -80,7 +81,7 @@ class MainCamera : AppCompatActivity(){
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 myWalkCntString = snapshot.child("walkCnt").getValue(String::class.java)
-                stepCount.text = myWalkCntString + "걸음"
+                stepCount.text = myWalkCntString + "\uD83D\uDC63"
                 val step = myWalkCntString!!.toDouble() / 100000
                 distance.text = (round(step * 100) / 100).toString() + "km"
             }
@@ -97,8 +98,8 @@ class MainCamera : AppCompatActivity(){
             if (screenShot != null) {
                 sendBroadcast(
                     Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,Uri.fromFile(screenShot)))
-                var msg = Toast.makeText(applicationContext, "Screenshot Saved", Toast.LENGTH_SHORT)
-                msg.show()
+                Toast.makeText(applicationContext, "오늘의 기록이 저장되었어요.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "오늘 하루도 고생했어요😁", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -115,7 +116,7 @@ class MainCamera : AppCompatActivity(){
                 } catch (e: Exception) {
                 }
             } else if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(this, "사진 선택 취소", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "사진 선택을 취소했어요.", Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -128,7 +129,7 @@ class MainCamera : AppCompatActivity(){
       fun ScreenShot(view: View): File? {
         view.isDrawingCacheEnabled = true
         val screenBitmap = view.drawingCache
-        val timestamp = java.text.SimpleDateFormat("yyyyMMdd HHmmss").format(Date())
+        val timestamp = java.text.SimpleDateFormat("yyyyMMddHHmmss").format(Date())
         val filename = "walkwalk_$timestamp.png"
         val file = File(
             Environment.getExternalStorageDirectory().toString() + "/Pictures",

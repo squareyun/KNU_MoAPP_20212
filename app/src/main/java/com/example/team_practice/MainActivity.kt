@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        title="Login"
 
         var loginBtn = findViewById<Button>(R.id.loginBtn)
         var ID       = findViewById<EditText>(R.id.loginID)

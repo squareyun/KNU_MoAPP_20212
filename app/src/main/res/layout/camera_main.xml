@@ -11,7 +11,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="center">
      <TextView
         android:layout_width="match_parent"
         android:layout_marginTop="40dp"
@@ -27,9 +28,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
             android:text="사진을 선택하려면 아래 화면을 클릭하세요"
-            android:layout_marginLeft="65dp"
             />
 
         <FrameLayout
@@ -99,6 +98,7 @@
             android:layout_margin="40dp"
             android:layout_weight="1"
           android:background="#506AD4"
+          android:textColor="@color/white"
             android:text="갤러리 저장"
           
             />

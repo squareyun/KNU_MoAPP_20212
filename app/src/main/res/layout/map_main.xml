@@ -37,6 +37,8 @@
         android:layout_marginRight = "10dp"
         android:background="@drawable/round_button"
         android:layout_gravity="right|top"
+        android:text="+"
+        android:textColor="@color/white"
         />
 
 
