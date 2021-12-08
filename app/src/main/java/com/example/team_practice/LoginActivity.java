@@ -1,5 +1,6 @@
 package com.example.team_practice;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -36,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         Button btn_register = findViewById(R.id.btn_register);
         Auto_Login = findViewById(R.id.Auto_Login);
 
-        SharedPreferences setting = getSharedPreferences("setting", 0);
+        SharedPreferences setting = getSharedPreferences("setting", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = setting.edit();
 
         Auto_Login.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
