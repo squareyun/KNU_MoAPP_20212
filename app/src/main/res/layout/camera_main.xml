@@ -25,12 +25,6 @@
         android:textStyle="bold"
         />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="사진을 선택하려면 아래 화면을 클릭하세요"
-            />
-
         <FrameLayout
             android:id="@+id/todayFrame"
         android:layout_marginTop="10dp"
@@ -38,8 +32,12 @@
         android:layout_height="match_parent">
 
 
+
+
         <ImageView
-            android:id="@+id/image"
+
+
+            android:id="@+id/imageCamera"
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:layout_gravity="center"
@@ -120,4 +118,6 @@
     </LinearLayout>
 
 </ScrollView>
+
+
 
