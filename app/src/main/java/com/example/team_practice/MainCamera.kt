@@ -45,8 +45,7 @@ import kotlin.math.round
 
 
 class MainCamera : AppCompatActivity(){
-   private var imageView1: ImageView? = null
-    private var imageView2: ImageView? = null
+    private var imageView: ImageView? = null
     var today : TextView? = null
     var now = Date()
     var dFormat :SimpleDateFormat? = null
@@ -67,7 +66,7 @@ class MainCamera : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.camera_main)
-           setViews()
+        setViews()
         title = "Record"
 
         distance = findViewById(R.id.distance)
@@ -78,13 +77,13 @@ class MainCamera : AppCompatActivity(){
         today!!.text = dFormat!!.format(now).toString()
 
 
-       // imageView1 = findViewById(R.id.imageGallery)
-       // imageView1?.setOnClickListener(View.OnClickListener {
-         //   val intent = Intent()
-          //  intent.type = "image/*"
-           // intent.action = Intent.ACTION_GET_CONTENT
-           // startActivityForResult(intent, REQUEST_CODE)
-        //})
+        imageView = findViewById(R.id.image)
+        imageView?.setOnClickListener(View.OnClickListener {
+            val intent = Intent()
+            intent.type = "image/*"
+            intent.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(intent, REQUEST_CODE)
+        })
 
         stepCount = findViewById(R.id.stepCount)
         var firebaseDatabase = FirebaseDatabase.getInstance()
@@ -104,8 +103,8 @@ class MainCamera : AppCompatActivity(){
             }
 
         })
-  
-   Save = findViewById<Button>(R.id.SAVE)
+
+        Save = findViewById<Button>(R.id.SAVE)
         Save?.setOnClickListener {
             val rootView = todayFrame
             val screenShot = ScreenShot(rootView)
@@ -119,14 +118,14 @@ class MainCamera : AppCompatActivity(){
     }
 
 
-   private fun setViews() {
+    private fun setViews() {
         //카메라 버튼 클릭
         val btn_camera = findViewById<Button>(R.id.btncamera)
         btn_camera.setOnClickListener {
             //카메라 호출 메소드
             openCamera()
         }
-   }
+    }
 
 
     private fun openCamera() {
@@ -177,33 +176,30 @@ class MainCamera : AppCompatActivity(){
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-      //기존 갤러리의 사진을 배경으로 활용
-    /*    if (requestCode == REQUEST_CODE) {
-            val imageBitmap = data?.extras?.get("data") as Bitmap
-            saveBitmapAsJPGFile(imageBitmap)
-            imageView1?.setImageBitmap(imageBitmap)
+        //기존 갤러리의 사진을 배경으로 활용
+        if (requestCode == REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 try {
                     val `in` = contentResolver.openInputStream(data!!.data!!)
                     val img = BitmapFactory.decodeStream(`in`)
                     `in`!!.close()
-                    imageView1!!.setImageBitmap(img)
+                    imageView!!.setImageBitmap(img)
                 } catch (e: Exception) {
                 }
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, "사진 선택을 취소했어요.", Toast.LENGTH_LONG).show()
             }
         }
-*/
+
         // 촬영한 이미지를 배경으로 활용
-        if(resultCode == Activity.RESULT_OK){
+        else if(resultCode == Activity.RESULT_OK){
             when(requestCode){
                 FLAG_REQ_CAMERA ->{
                     if(data?.extras?.get("data") != null){
                         //카메라로 방금 촬영한 이미지를 미리 만들어 놓은 이미지뷰로 전달 합니다.
                         val bitmap = data?.extras?.get("data") as Bitmap
-                        var imageView2 = findViewById<ImageView>(R.id.imageCamera)
-                        imageView2.setImageBitmap(bitmap)
+                        var imageView = findViewById<ImageView>(R.id.image)
+                        imageView.setImageBitmap(bitmap)
                     }
                 }
             }
