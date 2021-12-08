@@ -118,21 +118,19 @@ class MainCamera : AppCompatActivity(){
     }
 
 
-    private fun setViews() {
+   private fun setViews() {
         //카메라 버튼 클릭
         val btn_camera = findViewById<Button>(R.id.btncamera)
         btn_camera.setOnClickListener {
             //카메라 호출 메소드
             openCamera()
         }
-    }
+   }
 
 
     private fun openCamera() {
-
-            val intent:Intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(intent,FLAG_REQ_CAMERA)
-      //  }
+        val intent:Intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(intent,FLAG_REQ_CAMERA)
     }
 
     //권한이 있는지 체크하는 메소드
@@ -149,11 +147,13 @@ class MainCamera : AppCompatActivity(){
         }
         return true
     }
+
     private fun newJpgFileName() : String {
         val sdf = java.text.SimpleDateFormat("yyyyMMdd_HHmmss")
         val filename = sdf.format(System.currentTimeMillis())
         return "${filename}.png"
     }
+
     private fun saveBitmapAsJPGFile(bitmap: Bitmap) {
         val path = File(filesDir, "image")
         if(!path.exists()){
@@ -214,8 +214,8 @@ class MainCamera : AppCompatActivity(){
         private const val REQUEST_CODE = 0
     }
 
-    
-      fun ScreenShot(view: View): File? {
+
+    fun ScreenShot(view: View): File? {
         view.isDrawingCacheEnabled = true
         val screenBitmap = view.drawingCache
         val timestamp = java.text.SimpleDateFormat("yyyyMMddHHmmss").format(Date())
@@ -236,6 +236,7 @@ class MainCamera : AppCompatActivity(){
         view.isDrawingCacheEnabled = false
         return file
     }
+
     //    로그아웃 구현
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
