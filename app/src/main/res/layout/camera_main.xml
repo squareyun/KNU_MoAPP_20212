@@ -92,6 +92,19 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
+
+        <Button
+            android:id="@+id/btncamera"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_margin="40dp"
+            android:layout_weight="1"
+            android:background="#506AD4"
+            android:textColor="@color/white"
+            android:text="카메라"
+
+            />
+
       <Button
             android:id="@+id/SAVE"
             android:layout_width="wrap_content"
@@ -107,3 +120,4 @@
     </LinearLayout>
 
 </ScrollView>
+
