@@ -161,15 +161,9 @@ class MainFriendList : AppCompatActivity() {
                                         var newFriendID = childSnap.key
 
                                         if (findingID.text.toString().equals(newFriendID)) {
-                                            //Toast.makeText(applicationContext, newFriendID + "exist.", Toast.LENGTH_SHORT).show()
                                             var newFriendName = childSnap.child("userName").getValue(String::class.java)
                                             databaseReference.child("user").child(MyData.ID).child("friendList").child(newFriendID!!).setValue(newFriendName)
-                                                    /*
-                                        var newFriendWalkCnt = childSnap.child("walkCnt").getValue(String::class.java)
-                                        friendAdapter.addItem(FriendListItem(newFriendName, "현재 걸음 수 : " + newFriendWalkCnt))
-                                        friendAdapter.items.sortBy { it.name }
-                                        friendAdapter.notifyDataSetChanged()
-                                         */
+
                                             return
                                         }
 
@@ -189,67 +183,6 @@ class MainFriendList : AppCompatActivity() {
                     .show()
 
             }
-/*
-            R.id.itemFriendDelete ->{
-                var dialogView = View.inflate(this, R.layout.friend_delete, null)
-
-                var deleteName : String = ""
-
-                var spinner = dialogView.findViewById<Spinner>(R.id.friendDeleteSpinner)
-                spinner.adapter = friendDeleteAdapter
-
-                spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-                    override fun onItemSelected( p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long ) {
-                        deleteName = spinner.getItemAtPosition(p2).toString()
-                    }
-
-                    override fun onNothingSelected(p0: AdapterView<*>?) {
-                        TODO("Not yet implemented")
-                    }
-
-                }
-
-                AlertDialog.Builder(this /* 해당 액티비티를 가르킴 */)
-                    .setTitle("친구삭제")
-                    .setView(dialogView)
-                    .setPositiveButton(
-                        "삭제",
-                        DialogInterface.OnClickListener { dialog, whichButton ->
-
-                            var firebaseDatabase = FirebaseDatabase.getInstance()
-                            var databaseReference = firebaseDatabase.getReference()
-
-                            var isDelete = true
-
-                            var childKey = ""
-
-                            databaseReference.child("user").child(MyData.ID).child("friendList").addValueEventListener( object : ValueEventListener{
-
-                                override fun onDataChange(snapshot: DataSnapshot) {
-
-                                    for(childSnap in snapshot.children){
-                                        var friendName = childSnap.getValue(String::class.java)
-
-                                        if(deleteName.equals(friendName) && isDelete){
-                                            childKey = childSnap.key!!
-                                            Toast.makeText(applicationContext, childKey, Toast.LENGTH_SHORT).show()
-                                            databaseReference.child("user").child(MyData.ID).child("friendList").child(childKey).setValue(null)
-                                            return
-                                        }
-                                    }
-                                }
-
-                                override fun onCancelled(error: DatabaseError) {
-                                    TODO("Not yet implemented")
-                                }
-                            })
-                        })
-                    .setNegativeButton("취소",
-                        DialogInterface.OnClickListener { dialog, whichButton -> })
-                    .show()
-            }
-
- */
         }
         return true
     }

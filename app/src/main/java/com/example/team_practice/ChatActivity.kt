@@ -54,7 +54,6 @@ class ChatActivity : AppCompatActivity() {
         arrayForSort.sort()
 
         var chatName = arrayForSort[0] + "_" + arrayForSort[1]
-        Toast.makeText(applicationContext, chatName, Toast.LENGTH_SHORT).show()
 
         var firebaseDatabase = FirebaseDatabase.getInstance()
         var databaseReference = firebaseDatabase.getReference()
@@ -81,7 +80,6 @@ class ChatActivity : AppCompatActivity() {
                 adapter.notifyDataSetChanged()
                 chatListView.setSelection(chatItems.size - 1)
 
-                Toast.makeText(applicationContext, "click", Toast.LENGTH_SHORT).show()
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {

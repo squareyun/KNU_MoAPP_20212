@@ -6,10 +6,6 @@
         android:title="친구찾기">
     </item>
     <item
-        android:id="@+id/itemFriendDelete"
-        android:title="친구삭제">
-    </item>
-    <item
         android:id="@+id/itemLogout"
         android:title="로그아웃">
     </item>
