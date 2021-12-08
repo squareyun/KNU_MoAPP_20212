@@ -39,7 +39,7 @@ import com.google.firebase.database.ValueEventListener
 import java.lang.Exception
 import java.util.*
 import kotlin.math.round
-import com.example.team_practice.databinding.CameraMainBinding
+
 
 
 class MainCamera : AppCompatActivity(){
