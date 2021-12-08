@@ -24,11 +24,13 @@ import android.icu.text.SimpleDateFormat
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -37,6 +39,7 @@ import com.google.firebase.database.ValueEventListener
 import java.lang.Exception
 import java.util.*
 import kotlin.math.round
+import com.example.team_practice.databinding.CameraMainBinding
 
 
 class MainCamera : AppCompatActivity(){
@@ -51,11 +54,17 @@ class MainCamera : AppCompatActivity(){
     private lateinit var todayFrame: FrameLayout
     var Save : Button? = null
 
+
+    //카메라와 갤러리를 호출하는 플래그
+    val FLAG_REQ_CAMERA = 101
+
+
     @SuppressLint("NewApi")
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.camera_main)
+           setViews()
         title = "Record"
 
         distance = findViewById(R.id.distance)
@@ -105,6 +114,40 @@ class MainCamera : AppCompatActivity(){
             }
         }
     }
+
+
+    private fun setViews() {
+        //카메라 버튼 클릭
+        val btn_camera = findViewById<Button>(R.id.btncamera)
+        btn_camera.setOnClickListener {
+            //카메라 호출 메소드
+            openCamera()
+        }
+    }
+
+
+    private fun openCamera() {
+
+            val intent:Intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(intent,FLAG_REQ_CAMERA)
+      //  }
+    }
+
+    //권한이 있는지 체크하는 메소드
+    fun checkPermission(permissions:Array<out String>,flag:Int):Boolean{
+        //안드로이드 버전이 마쉬멜로우 이상일때
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            for(permission in permissions){
+                //만약 권한이 승인되어 있지 않다면 권한승인 요청을 사용에 화면에 호출합니다.
+                if(ContextCompat.checkSelfPermission(this,permission) != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(this,permissions,flag)
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
