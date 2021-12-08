@@ -1,5 +1,6 @@
 package com.example.team_practice
 
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.Manifest
@@ -36,6 +37,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import java.io.OutputStream
 import java.lang.Exception
 import java.util.*
 import kotlin.math.round
@@ -147,11 +149,38 @@ class MainCamera : AppCompatActivity(){
         }
         return true
     }
+    private fun newJpgFileName() : String {
+        val sdf = java.text.SimpleDateFormat("yyyyMMdd_HHmmss")
+        val filename = sdf.format(System.currentTimeMillis())
+        return "${filename}.png"
+    }
+    private fun saveBitmapAsJPGFile(bitmap: Bitmap) {
+        val path = File(filesDir, "image")
+        if(!path.exists()){
+            path.mkdirs()
+        }
+        val file = File(path, newJpgFileName())
+        var imageFile: OutputStream? = null
+        try{
+            file.createNewFile()
+            imageFile = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, imageFile)
+            imageFile.close()
+            Toast.makeText(this, file.absolutePath, Toast.LENGTH_LONG).show()
+        }catch (e: Exception){
+            null
+        }
+    }
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
+      //기존 갤러리의 사진을 배경으로 활용
         if (requestCode == REQUEST_CODE) {
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+            saveBitmapAsJPGFile(imageBitmap)
+            imageView?.setImageBitmap(imageBitmap)
             if (resultCode == RESULT_OK) {
                 try {
                     val `in` = contentResolver.openInputStream(data!!.data!!)
@@ -164,6 +193,21 @@ class MainCamera : AppCompatActivity(){
                 Toast.makeText(this, "사진 선택을 취소했어요.", Toast.LENGTH_LONG).show()
             }
         }
+
+        // 촬영한 이미지를 배경으로 활용
+        if(resultCode == Activity.RESULT_OK){
+            when(requestCode){
+                FLAG_REQ_CAMERA ->{
+                    if(data?.extras?.get("data") != null){
+                        //카메라로 방금 촬영한 이미지를 미리 만들어 놓은 이미지뷰로 전달 합니다.
+                        val bitmap = data?.extras?.get("data") as Bitmap
+                        var imageView = findViewById<ImageView>(R.id.image)
+                        imageView.setImageBitmap(bitmap)
+                    }
+                }
+            }
+        }
+
     }
 
     companion object {
